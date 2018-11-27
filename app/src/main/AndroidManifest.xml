@@ -20,7 +20,7 @@
 
         <receiver android:name="alarm.Alarm_receiver">
             <intent-filter>
-                <action android:name="alarm" />
+                <action android:name="callSun" />
             </intent-filter>
         </receiver>
     </application>

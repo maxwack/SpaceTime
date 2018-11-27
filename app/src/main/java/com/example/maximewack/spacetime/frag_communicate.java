@@ -116,6 +116,7 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
             case  R.id.but_Sun: {
                 AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
                 Intent intent = new Intent(context, Alarm_receiver.class);
+                intent.setAction("callSun");
                 PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
                 alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
