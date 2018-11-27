@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import alarm.Alarm_receiver;
+import view.DynamicSineWaveView;
 
 
 /**
@@ -75,11 +76,14 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
 
         View myView = inflater.inflate(R.layout.frag_communicate, container, false);
 
-        Button mSunSend = (Button) myView.findViewById(R.id.but_Sun);
+        Button mSunSend =  myView.findViewById(R.id.but_Sun);
         mSunSend.setOnClickListener(this);
 
-        Button mMoonSend = (Button) myView.findViewById(R.id.but_Moon);
-        mSunSend.setOnClickListener(this);
+        Button mMoonSend =  myView.findViewById(R.id.but_Moon);
+        mMoonSend.setOnClickListener(this);
+
+        DynamicSineWaveView mSineWave =  myView.findViewById(R.id.sunSineWave);
+        mSineWave.setVisibility(View.INVISIBLE);
 
 
         // Inflate the layout for this fragment
@@ -122,6 +126,17 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
                 alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                         SystemClock.elapsedRealtime() +
                                 5 * 1000, alarmIntent);
+
+                Button but_Sun = v.findViewById(R.id.but_Sun);
+                but_Sun.setVisibility(View.INVISIBLE);
+
+                DynamicSineWaveView wavesView = getView().findViewById(R.id.sunSineWave);
+                wavesView.setVisibility(View.VISIBLE);
+                wavesView.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
+                wavesView.addWave(0.5f, 2f, 0.5f, getResources().getColor(android.R.color.holo_red_dark), 0);
+                wavesView.addWave(0.1f, 2f, 0.7f, getResources().getColor(android.R.color.holo_blue_dark), 0);
+                wavesView.startAnimation();
+
                 break;
             }
 

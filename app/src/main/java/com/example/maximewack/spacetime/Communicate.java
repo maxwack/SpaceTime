@@ -26,10 +26,10 @@ public class Communicate extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_communicate);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
 

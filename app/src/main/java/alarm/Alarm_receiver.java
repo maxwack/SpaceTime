@@ -14,6 +14,7 @@ public class Alarm_receiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         DBHandler dbHandler = new DBHandler(context, null);
+
         Toast.makeText(context, "DB CREATED", Toast.LENGTH_SHORT).show();
         //dbHandler.updateArrivedData("SUN", 0, 0);
 
