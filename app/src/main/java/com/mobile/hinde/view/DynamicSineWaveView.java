@@ -1,4 +1,4 @@
-package view;
+package com.mobile.hinde.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -28,9 +28,9 @@ public class DynamicSineWaveView extends View {
     private static final int POINTS_FOR_CYCLE = 10;
 
     public static class Wave {
-        public float amplitude; // wave amplitude, relative to view, range from 0 ~ 0.5
+        public float amplitude; // wave amplitude, relative to com.mobile.hinde.view, range from 0 ~ 0.5
         public float cycle;     // contains how many cycles in scene
-        public float speed;     // space per second, relative to view. X means the wave move X times of width per second
+        public float speed;     // space per second, relative to com.mobile.hinde.view. X means the wave move X times of width per second
 
         public Wave(float a, float c, float s) {
             this.amplitude = a;
@@ -109,14 +109,14 @@ public class DynamicSineWaveView extends View {
     }
 
     /**
-     * Add new wave to the view.
+     * Add new wave to the com.mobile.hinde.view.
      *
      * The first added wave will become the 'base wave', which ignored the color & stroke, and
      * other wave will multiple with the 'base wave'. 'base wave' is used to shape the waves.
      *
-     * @param amplitude wave amplitude, relative to view, range from 0 ~ 0.5
+     * @param amplitude wave amplitude, relative to com.mobile.hinde.view, range from 0 ~ 0.5
      * @param cycle contains how many cycles in scene
-     * @param speed space per second, relative to view. X means the wave move X times of width per second
+     * @param speed space per second, relative to com.mobile.hinde.view. X means the wave move X times of width per second
      * @param color the wave color, ignored when add the 'base wave'
      * @param stroke wave stroke width, in pixel, ignored when add the 'base wave'
      * @return wave count (exclude the base wave).

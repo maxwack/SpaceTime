@@ -1,4 +1,4 @@
-package com.example.maximewack.spacetime;
+package com.mobile.hinde.spacetime;
 
 import android.net.Uri;
 import android.support.v4.app.Fragment;

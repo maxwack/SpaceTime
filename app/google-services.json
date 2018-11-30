@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "567458562074",
+    "firebase_url": "https://space-time-12b72.firebaseio.com",
+    "project_id": "space-time-12b72",
+    "storage_bucket": "space-time-12b72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567458562074:android:ab1fce9147356d08",
+        "android_client_info": {
+          "package_name": "com.mobile.hinde.spacetime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567458562074-ga4stosuvlo68mucmp498vphlsgbo2mt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHc7vof0n2uJQ7c4Ztd9WoOLpdyTjwD18"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

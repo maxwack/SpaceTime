@@ -1,4 +1,4 @@
-package com.example.maximewack.spacetime;
+package com.mobile.hinde.spacetime;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package database;
+package com.mobile.hinde.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    //information of database
+    //information of com.mobile.hinde.database
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "SpaceTime.db";
     public static final String TABLE_NAME = "Menu_Com";
@@ -18,7 +18,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_IS_RETURNED = "is_returned";
 
 
-    //initialize the database
+    //initialize the com.mobile.hinde.database
     public DBHandler(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }

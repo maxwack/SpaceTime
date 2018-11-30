@@ -48,7 +48,7 @@
                     android:gravity="center"
                     android:text="Send" />
 
-                <view.DynamicSineWaveView
+                <com.mobile.hinde.view.DynamicSineWaveView
                     android:id="@+id/sunSineWave"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

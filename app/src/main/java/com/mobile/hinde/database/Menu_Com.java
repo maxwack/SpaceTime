@@ -1,4 +1,4 @@
-package database;
+package com.mobile.hinde.database;
 
 public class Menu_Com {
     private String name;

@@ -1,11 +1,11 @@
-package alarm;
+package com.mobile.hinde.alarm;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import database.DBHandler;
+import com.mobile.hinde.database.DBHandler;
 
 public class Alarm_receiver extends BroadcastReceiver {
 

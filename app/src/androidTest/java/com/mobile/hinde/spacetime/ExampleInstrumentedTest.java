@@ -1,4 +1,4 @@
-package com.example.maximewack.spacetime;
+package com.mobile.hinde.spacetime;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
