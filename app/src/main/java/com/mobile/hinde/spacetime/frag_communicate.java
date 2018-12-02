@@ -7,14 +7,28 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.FirebaseFunctionsException;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.mobile.hinde.alarm.Alarm_receiver;
 import com.mobile.hinde.view.DynamicSineWaveView;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -34,6 +48,7 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
 
     private OnFragmentInteractionListener mListener;
 
@@ -116,6 +131,7 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
 
     public void onClick(View v){
         Context context = getContext();
+        Map<String, Object> data = new HashMap<>();
         switch (v.getId()) {
             case  R.id.but_Sun: {
                 AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -137,6 +153,32 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
                 wavesView.addWave(0.1f, 2f, 0.7f, getResources().getColor(android.R.color.holo_blue_dark), 0);
                 wavesView.startAnimation();
 
+                String ret = "";
+                addMessage("SUN")
+                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                            @Override
+                            public void onComplete(@NonNull Task<String> task) {
+                                if (!task.isSuccessful()) {
+                                    Exception e = task.getException();
+                                    if (e instanceof FirebaseFunctionsException) {
+                                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                                        FirebaseFunctionsException.Code code = ffe.getCode();
+                                        Object details = ffe.getDetails();
+                                    }
+
+                                    // [START_EXCLUDE]
+                                    Log.w(TAG, "addMessage:onFailure", e);
+                                    return;
+                                    // [END_EXCLUDE]
+                                }
+
+                                // [START_EXCLUDE]
+                                String result = task.getResult();
+                                Toast.makeText(getActivity(), result,
+                                        Toast.LENGTH_LONG).show();
+                                // [END_EXCLUDE]
+                            }
+                        });
                 break;
             }
 
@@ -146,6 +188,26 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
             }
         }
 
+    }
+
+    private Task<String> addMessage(String text) {
+        // Create the arguments to the callable function.
+        Map<String, Object> data = new HashMap<>();
+        data.put("object", text);
+
+        return mFunctions
+                .getHttpsCallable("addMessage")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        HashMap<String,String> result = (HashMap<String,String>) task.getResult().getData();
+                        return result.get("duration");
+                    }
+                });
     }
 
     /**
