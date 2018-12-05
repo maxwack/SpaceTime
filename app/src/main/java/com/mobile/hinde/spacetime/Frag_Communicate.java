@@ -15,20 +15,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.functions.FirebaseFunctions;
 import com.mobile.hinde.alarm.Broadcast_Service;
 import com.mobile.hinde.connection.AsyncResponse;
 import com.mobile.hinde.connection.Duration_Site;
+import com.mobile.hinde.utils.Constant;
 import com.mobile.hinde.utils.Tool;
 import com.mobile.hinde.view.DynamicSineWaveView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,26 +34,26 @@ import static android.content.ContentValues.TAG;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link frag_communicate.OnFragmentInteractionListener} interface
+ * {@link Frag_Communicate.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link frag_communicate#newInstance} factory method to
+ * Use the {@link Frag_Communicate#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class frag_communicate extends Fragment implements View.OnClickListener {
+public class Frag_Communicate extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
 
     private OnFragmentInteractionListener mListener;
     private IntentFilter mFilter = new IntentFilter();
 
-    public frag_communicate() {
+    public Frag_Communicate() {
         // Required empty public constructor
     }
 
@@ -67,11 +63,11 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment frag_communicate.
+     * @return A new instance of fragment Frag_Communicate.
      */
     // TODO: Rename and change types and number of parameters
-    public static frag_communicate newInstance(String param1, String param2) {
-        frag_communicate fragment = new frag_communicate();
+    public static Frag_Communicate newInstance(String param1, String param2) {
+        Frag_Communicate fragment = new Frag_Communicate();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -98,8 +94,12 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
 
         View myView = inflater.inflate(R.layout.frag_communicate, container, false);
 
-        Button mSunSend =  myView.findViewById(R.id.but_Sun);
+        Button mSunSend =  myView.findViewById(R.id.but_Send_Sun);
         mSunSend.setOnClickListener(this);
+
+        Button mSunAccept =  myView.findViewById(R.id.but_Accept_Sun);
+        mSunAccept.setOnClickListener(this);
+        mSunAccept.setVisibility(View.INVISIBLE);
 
         Button mMoonSend =  myView.findViewById(R.id.but_Moon);
         mMoonSend.setOnClickListener(this);
@@ -140,18 +140,18 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
         final Context context = getContext();
         Map<String, Object> data = new HashMap<>();
         switch (v.getId()) {
-            case  R.id.but_Sun: {
+            case  R.id.but_Send_Sun: {
                 Duration_Site asyncTask = (Duration_Site) new Duration_Site(new AsyncResponse(){
 
                     @Override
-                    public void processFinish(String output){
+                    public void processFinish(Long output){
                         Intent intent = new Intent(context,Broadcast_Service.class);
                         intent.setAction("callSun");
-                        intent.putExtra("duration",30000l);
+                        intent.putExtra("duration",output);
                         context.startService(intent);
 
-                        Button but_Sun = v.findViewById(R.id.but_Sun);
-                        but_Sun.setVisibility(View.INVISIBLE);
+                        Button but_Send_Sun = v.findViewById(R.id.but_Send_Sun);
+                        but_Send_Sun.setVisibility(View.INVISIBLE);
 
                         DynamicSineWaveView wavesView = getView().findViewById(R.id.sunSineWave);
                         wavesView.setVisibility(View.VISIBLE);
@@ -159,8 +159,15 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
                         wavesView.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(context,android.R.color.holo_red_dark), 4);
                         wavesView.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(context,android.R.color.holo_blue_dark), 4);
                         wavesView.startAnimation();
+
+                        TextView txt_Sun = getView().findViewById(R.id.sunTimer);
+                        txt_Sun.setVisibility(View.VISIBLE);
                     }
-                }).execute();
+                }).execute("SUN");
+                break;
+            }
+            case R.id.but_Accept_Sun:{
+                startActivityForResult(new Intent(context, Act_Image.class), Constant.SUN_CODE);
                 break;
             }
 
@@ -170,6 +177,22 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
             }
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(requestCode==Constant.SUN_CODE)
+        {
+            Button but_Accept_Sun =  getView().findViewById(R.id.but_Accept_Sun);
+            but_Accept_Sun.setVisibility(View.INVISIBLE);
+            Button but_Send_Sun =  getView().findViewById(R.id.but_Send_Sun);
+            but_Send_Sun.setVisibility(View.VISIBLE);
+            TextView txt_Sun = getView().findViewById(R.id.sunTimer);
+            txt_Sun.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -211,9 +234,8 @@ public class frag_communicate extends Fragment implements View.OnClickListener {
                 wavesView.stopAnimation();
                 wavesView.setVisibility(View.INVISIBLE);
 
-                Button but_Sun =  getView().findViewById(R.id.but_Sun);
-                but_Sun.setText("ACCEPT");
-                but_Sun.setVisibility(View.VISIBLE);
+                Button but_Accept_Sun =  getView().findViewById(R.id.but_Accept_Sun);
+                but_Accept_Sun.setVisibility(View.VISIBLE);
             }else {
                 long remain = intent.getExtras().getLong("countdown");
                 TextView txt_Sun = getView().findViewById(R.id.sunTimer);

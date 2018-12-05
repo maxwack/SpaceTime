@@ -11,6 +11,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="PopUpTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
 
     <!-- ActionBar tabs text styles -->
     <style name="AppTheme.WithoutActionBar" parent="ThemeOverlay.AppCompat.Dark">

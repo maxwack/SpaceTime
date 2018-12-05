@@ -25,8 +25,9 @@ public class Broadcast_Service extends Service {
 
     @Override
     public void onDestroy() {
-
-        cdt.cancel();
+        if(cdt != null) {
+            cdt.cancel();
+        }
         Log.i(TAG, "Timer cancelled");
         super.onDestroy();
     }

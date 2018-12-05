@@ -13,8 +13,8 @@ import android.support.design.widget.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Communicate extends AppCompatActivity
-        implements  frag_communicate.OnFragmentInteractionListener,
+public class Act_Communicate extends AppCompatActivity
+        implements  Frag_Communicate.OnFragmentInteractionListener,
                     frag_launch.OnFragmentInteractionListener{
 
     private Toolbar toolbar;
@@ -35,7 +35,7 @@ public class Communicate extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new frag_communicate(), "SEND");
+        adapter.addFragment(new Frag_Communicate(), "SEND");
         adapter.addFragment(new frag_launch(), "LAUNCH");
         viewPager.setAdapter(adapter);
     }

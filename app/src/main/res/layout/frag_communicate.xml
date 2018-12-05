@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".frag_communicate">
+    tools:context=".Frag_Communicate">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -38,7 +38,7 @@
                 android:layout_weight="1">
 
                 <Button
-                    android:id="@+id/but_Sun"
+                    android:id="@+id/but_Send_Sun"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_alignEnd="@+id/sunSineWave"
@@ -46,6 +46,16 @@
                     android:layout_marginEnd="-1dp"
                     android:gravity="center"
                     android:text="SEND" />
+
+                <Button
+                    android:id="@+id/but_Accept_Sun"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/sunSineWave"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="-1dp"
+                    android:gravity="center"
+                    android:text="ACCEPT" />
 
                 <com.mobile.hinde.view.DynamicSineWaveView
                     android:id="@+id/sunSineWave"
