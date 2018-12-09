@@ -1,8 +1,8 @@
 package com.mobile.hinde.connection;
 
 import android.os.AsyncTask;
-import android.text.Html;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,13 +14,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Calendar;
+import java.util.Random;
 
-public class Duration_Site extends AsyncTask<String, Void, JSONObject> {
+public class Image_List extends AsyncTask<String, Void, JSONObject> {
 
     public AsyncResponse delegate = null;
 
-    public Duration_Site(AsyncResponse delegate){
+    public Image_List(AsyncResponse delegate){
         this.delegate = delegate;
     }
 
@@ -28,20 +28,26 @@ public class Duration_Site extends AsyncTask<String, Void, JSONObject> {
     protected JSONObject doInBackground(String... target) {
         StringBuilder result = new StringBuilder();
         HttpURLConnection urlConnection = null;
-        JSONObject json_Res = null;
+
+        JSONObject res = null;
+
         try {
-            Calendar rightNow = Calendar.getInstance();
-            String date = rightNow.get(Calendar.YEAR) + "-" + String.format("%02d",rightNow.get(Calendar.MONTH) + 1 ) + "-" + String.format("%02d",rightNow.get(Calendar.DAY_OF_MONTH) );
-            URL url = new URL("https://space-time-12b72.firebaseapp.com/" + date + ".json");
+            URL url = new URL("https://space-time-12b72.firebaseapp.com/" + target[0] +"/image_list.json");
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String line;
             while((line = reader.readLine()) != null) {
-                    result.append(line);
+                result.append(line);
             }
 
-            json_Res = new JSONObject(result.toString());
+            JSONArray json_Res = new JSONArray(result.toString());
+            int maxVal = json_Res.length();
+            int random = new Random().nextInt(maxVal);
+            res = json_Res.getJSONObject(0);
+
+
+
 
         }catch(MalformedURLException mue){
 
@@ -55,8 +61,7 @@ public class Duration_Site extends AsyncTask<String, Void, JSONObject> {
             }
         }
 
-        return json_Res;
-
+        return res;
     }
 
     @Override

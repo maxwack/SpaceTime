@@ -1,7 +1,7 @@
 package com.mobile.hinde.connection;
 
+import org.json.JSONObject;
+
 public interface  AsyncResponse {
-
-
-    void processFinish(Long output);
+    void processFinish(JSONObject output);
 }

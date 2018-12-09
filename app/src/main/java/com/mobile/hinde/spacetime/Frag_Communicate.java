@@ -1,5 +1,6 @@
 package com.mobile.hinde.spacetime;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,8 @@ import com.mobile.hinde.utils.Constant;
 import com.mobile.hinde.utils.Tool;
 import com.mobile.hinde.view.DynamicSineWaveView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.HashMap;
@@ -52,6 +55,7 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private IntentFilter mFilter = new IntentFilter();
+    private Dialog mDialog;
 
     public Frag_Communicate() {
         // Required empty public constructor
@@ -97,15 +101,22 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
         Button mSunSend =  myView.findViewById(R.id.but_Send_Sun);
         mSunSend.setOnClickListener(this);
 
+        Button mMoonSend =  myView.findViewById(R.id.but_Send_Moon);
+        mMoonSend.setOnClickListener(this);
+
+        DynamicSineWaveView mSunSineWave =  myView.findViewById(R.id.sunSineWave);
+        mSunSineWave.setVisibility(View.INVISIBLE);
+
+        DynamicSineWaveView mMoonSineWave =  myView.findViewById(R.id.moonSineWave);
+        mMoonSineWave.setVisibility(View.INVISIBLE);
+
         Button mSunAccept =  myView.findViewById(R.id.but_Accept_Sun);
         mSunAccept.setOnClickListener(this);
         mSunAccept.setVisibility(View.INVISIBLE);
 
-        Button mMoonSend =  myView.findViewById(R.id.but_Moon);
-        mMoonSend.setOnClickListener(this);
-
-        DynamicSineWaveView mSineWave =  myView.findViewById(R.id.sunSineWave);
-        mSineWave.setVisibility(View.INVISIBLE);
+        Button mMoonAccept =  myView.findViewById(R.id.but_Accept_Moon);
+        mMoonAccept.setOnClickListener(this);
+        mMoonAccept.setVisibility(View.INVISIBLE);
 
 
         // Inflate the layout for this fragment
@@ -144,24 +155,31 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
                 Duration_Site asyncTask = (Duration_Site) new Duration_Site(new AsyncResponse(){
 
                     @Override
-                    public void processFinish(Long output){
-                        Intent intent = new Intent(context,Broadcast_Service.class);
-                        intent.setAction("callSun");
-                        intent.putExtra("duration",output);
-                        context.startService(intent);
+                    public void processFinish(JSONObject output){
+                        try{
+                            Intent intent = new Intent(context,Broadcast_Service.class);
+                            intent.setAction("callSun");
+                            intent.putExtra("duration",output.getLong("SUN"));
+//                              intent.putExtra("duration",1000l);
 
-                        Button but_Send_Sun = v.findViewById(R.id.but_Send_Sun);
-                        but_Send_Sun.setVisibility(View.INVISIBLE);
+                            context.startService(intent);
 
-                        DynamicSineWaveView wavesView = getView().findViewById(R.id.sunSineWave);
-                        wavesView.setVisibility(View.VISIBLE);
-                        wavesView.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
-                        wavesView.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(context,android.R.color.holo_red_dark), 4);
-                        wavesView.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(context,android.R.color.holo_blue_dark), 4);
-                        wavesView.startAnimation();
+                            Button but_Send_Sun = v.findViewById(R.id.but_Send_Sun);
+                            but_Send_Sun.setVisibility(View.INVISIBLE);
 
-                        TextView txt_Sun = getView().findViewById(R.id.sunTimer);
-                        txt_Sun.setVisibility(View.VISIBLE);
+                            DynamicSineWaveView wavesView = getView().findViewById(R.id.sunSineWave);
+                            wavesView.setVisibility(View.VISIBLE);
+                            wavesView.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
+                            wavesView.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(context,android.R.color.holo_red_dark), 4);
+                            wavesView.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(context,android.R.color.holo_blue_dark), 4);
+                            wavesView.startAnimation();
+
+                            TextView txt_Sun = getView().findViewById(R.id.sunTimer);
+                            txt_Sun.setVisibility(View.VISIBLE);
+                        }
+                        catch(JSONException jsone){
+
+                        }
                     }
                 }).execute("SUN");
                 break;
@@ -171,7 +189,7 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
                 break;
             }
 
-            case R.id.but_Moon: {
+            case R.id.but_Send_Moon: {
                 // do something for button 2 click
                 break;
             }

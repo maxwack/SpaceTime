@@ -44,8 +44,11 @@
                     android:layout_alignEnd="@+id/sunSineWave"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="-1dp"
+                    android:background="@drawable/but_border"
+                    android:fontFamily="@font/digitaldream"
                     android:gravity="center"
-                    android:text="SEND" />
+                    android:text="SEND"
+                    android:textColor="@color/colorPrimary" />
 
                 <Button
                     android:id="@+id/but_Accept_Sun"
@@ -54,8 +57,11 @@
                     android:layout_alignEnd="@+id/sunSineWave"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="-1dp"
+                    android:background="@drawable/but_border"
+                    android:fontFamily="@font/digitaldream"
                     android:gravity="center"
-                    android:text="ACCEPT" />
+                    android:text="ACCEPT"
+                    android:textColor="@color/colorPrimary" />
 
                 <com.mobile.hinde.view.DynamicSineWaveView
                     android:id="@+id/sunSineWave"
@@ -103,13 +109,57 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="30sp" />
 
-            <Button
-                android:id="@+id/but_Moon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:text="Send" />
+
+            <RelativeLayout
+                android:layout_width="103dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/but_Send_Moon"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/moonSineWave"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="-1dp"
+                    android:background="@drawable/but_border"
+                    android:fontFamily="@font/digitaldream"
+                    android:gravity="center"
+                    android:text="SEND"
+                    android:textColor="@color/colorPrimary" />
+
+                <Button
+                    android:id="@+id/but_Accept_Moon"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/moonSineWave"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="-1dp"
+                    android:background="@drawable/but_border"
+                    android:fontFamily="@font/digitaldream"
+                    android:gravity="center"
+                    android:text="ACCEPT"
+                    android:textColor="@color/colorPrimary" />
+
+                <com.mobile.hinde.view.DynamicSineWaveView
+                    android:id="@+id/moonSineWave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="11dp" />
+
+                <TextView
+                    android:id="@+id/moonTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:fontFamily="@font/digitaldream"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="5dp" />
+            </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
