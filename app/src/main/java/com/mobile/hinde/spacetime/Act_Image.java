@@ -6,10 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,12 +14,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.mobile.hinde.alarm.Broadcast_Service;
 import com.mobile.hinde.connection.AsyncResponse;
-import com.mobile.hinde.connection.Duration_Site;
 import com.mobile.hinde.connection.Image_List;
 import com.mobile.hinde.utils.Constant;
-import com.mobile.hinde.view.DynamicSineWaveView;
 
 import org.json.JSONException;
 import org.json.JSONObject;

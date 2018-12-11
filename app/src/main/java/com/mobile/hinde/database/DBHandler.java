@@ -14,6 +14,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "Menu_Com";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_LAST_EXECUTED = "last_executed";
+    public static final String COLUMN_EXPECTED_END = "expected_end";
     public static final String COLUMN_IS_ARRIVED = "is_arrived";
     public static final String COLUMN_IS_RETURNED = "is_returned";
 
@@ -30,9 +31,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 "INTEGER," + COLUMN_IS_RETURNED + " INTEGER )";
         db.execSQL(CREATE_TABLE);
 
-        Menu_Com menu_Sun = new Menu_Com("SUN", 0, 0,0);
+        Menu_Com menu_Sun = new Menu_Com("SUN", 0,0, 0,0);
         insertData(menu_Sun);
-        Menu_Com menu_Moon = new Menu_Com("MOON", 0, 0,0);
+        Menu_Com menu_Moon = new Menu_Com("MOON", 0,0, 0,0);
         insertData(menu_Moon);
     }
 
@@ -101,11 +102,12 @@ public class DBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean updateData(String name, long last_executed) {
+    public boolean updateData(String name, long last_executed, long expected_end) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
         args.put(COLUMN_NAME, name);
         args.put(COLUMN_LAST_EXECUTED, last_executed);
+        args.put(COLUMN_EXPECTED_END, expected_end);
         return db.update(TABLE_NAME, args, COLUMN_NAME + "=" + name, null) > 0;
     }
     public boolean updateArrivedData(String name, long last_executed, int is_arrived) {

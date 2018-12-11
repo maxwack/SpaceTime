@@ -3,6 +3,7 @@ package com.mobile.hinde.database;
 public class Menu_Com {
     private String name;
     private long last_execute;
+    private long expected_end;
     private int is_arrived;
     private int is_returned;
 
@@ -10,9 +11,10 @@ public class Menu_Com {
 
     }
 
-    public Menu_Com(String name, long last_execute, int isArrived, int isReturned){
+    public Menu_Com(String name, long last_execute,long expected_end, int isArrived, int isReturned){
         this.name = name;
         this.last_execute = last_execute;
+        this.expected_end = expected_end;
         this.is_arrived = isArrived;
         this.is_returned = isReturned;
     }
@@ -48,5 +50,13 @@ public class Menu_Com {
 
     public void setIs_Returned(int is_Returned) {
         this.is_returned = is_Returned;
+    }
+
+    public long getExpected_end() {
+        return expected_end;
+    }
+
+    public void setExpected_end(long expected_end) {
+        this.expected_end = expected_end;
     }
 }

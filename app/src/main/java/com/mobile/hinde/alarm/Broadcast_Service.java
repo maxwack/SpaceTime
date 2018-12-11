@@ -36,13 +36,17 @@ public class Broadcast_Service extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         mDuration = intent.getExtras().getLong("duration");
 
+        final String target = intent.getAction();
+
         Log.i(TAG, "Starting timer...");
         cdt = new CountDownTimer(mDuration, 1000) {
+            private String mTarget = target;
             @Override
             public void onTick(long millisUntilFinished) {
 
                 Log.i(TAG, "Countdown seconds remaining: " + millisUntilFinished / 1000);
                 bi.putExtra("countdown", millisUntilFinished);
+                bi.putExtra("target",mTarget);
                 bi.setAction(COUNTDOWN_TICK);
                 sendBroadcast(bi);
             }
@@ -50,6 +54,7 @@ public class Broadcast_Service extends Service {
             @Override
             public void onFinish() {
                 bi.setAction(COUNTDOWN_FINISH);
+                bi.putExtra("target",mTarget);
                 sendBroadcast(bi);
                 Log.i(TAG, "Timer finished");
             }
