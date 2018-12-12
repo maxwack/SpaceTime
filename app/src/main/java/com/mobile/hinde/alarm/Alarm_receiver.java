@@ -13,7 +13,7 @@ public class Alarm_receiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
 
-        DBHandler dbHandler = new DBHandler(context, null);
+        DBHandler dbHandler = new DBHandler(context);
 
         Toast.makeText(context, "DB CREATED", Toast.LENGTH_SHORT).show();
         //dbHandler.updateArrivedData("SUN", 0, 0);

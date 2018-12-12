@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,7 +92,7 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
         mFilter.addAction(Broadcast_Service.COUNTDOWN_TICK);
         mFilter.addAction(Broadcast_Service.COUNTDOWN_FINISH);
 
-        DBHandler dbHandler = new DBHandler(getContext(),  null);
+        mDBHandler = new DBHandler(getContext());
     }
 
     @Override
@@ -161,8 +162,8 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
                         try{
                             long duration = output.getLong("SUN");
                             Intent intent = new Intent(context,Broadcast_Service.class);
-                            intent.setAction("callSun");
-                            intent.putExtra("duration",duration);
+                            intent.setAction("SUN");
+                            intent.putExtra("duration",duration * 2);
 //                              intent.putExtra("duration",1000l);
 
                             context.startService(intent);
@@ -180,6 +181,9 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
                             TextView txt_Sun = getView().findViewById(R.id.sunTimer);
                             txt_Sun.setVisibility(View.VISIBLE);
                             mDBHandler.updateData("SUN", System.currentTimeMillis(), System.currentTimeMillis()+ 2 * duration);
+                        }
+                        catch(NullPointerException npe){
+
                         }
                         catch(JSONException jsone){
 
@@ -200,7 +204,7 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
                     public void processFinish(JSONObject output){
                         try{
                             Intent intent = new Intent(context,Broadcast_Service.class);
-                            intent.setAction("callMoon");
+                            intent.setAction("MOON");
                             intent.putExtra("duration",output.getLong("MOON"));
 //                              intent.putExtra("duration",1000l);
 
@@ -219,6 +223,9 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
                             TextView txt = getView().findViewById(R.id.moonTimer);
                             txt.setVisibility(View.VISIBLE);
                         }
+                        catch(NullPointerException npe){
+
+                        }
                         catch(JSONException jsone){
 
                         }
@@ -233,25 +240,32 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.onActivityResult(requestCode, resultCode, data);
-        // check if the request code is same as what is passed  here it is 2
-        switch(requestCode){
-            case Constant.SUN_CODE:
-                Button but_Accept_Sun =  getView().findViewById(R.id.but_Accept_Sun);
-                but_Accept_Sun.setVisibility(View.INVISIBLE);
-                Button but_Send_Sun =  getView().findViewById(R.id.but_Send_Sun);
-                but_Send_Sun.setVisibility(View.VISIBLE);
-                TextView txt_Sun = getView().findViewById(R.id.sunTimer);
-                txt_Sun.setVisibility(View.INVISIBLE);
-                break;
-            case Constant.MOON_CODE:
-                Button but_Accept_Moon =  getView().findViewById(R.id.but_Accept_Moon);
-                but_Accept_Moon.setVisibility(View.INVISIBLE);
-                Button but_Send_Moon =  getView().findViewById(R.id.but_Send_Moon);
-                but_Send_Moon.setVisibility(View.VISIBLE);
-                TextView txt_Moon = getView().findViewById(R.id.moonTimer);
-                txt_Moon.setVisibility(View.INVISIBLE);
-                break;
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+            // check if the request code is same as what is passed  here it is 2
+            switch (requestCode) {
+                case Constant.SUN_CODE:
+                    Button but_Accept_Sun = getView().findViewById(R.id.but_Accept_Sun);
+                    but_Accept_Sun.setVisibility(View.INVISIBLE);
+                    Button but_Send_Sun = getView().findViewById(R.id.but_Send_Sun);
+                    but_Send_Sun.setVisibility(View.VISIBLE);
+
+                    mDBHandler.resetExpectedEnd("SUN");
+
+                    TextView txt_Sun = getView().findViewById(R.id.sunTimer);
+                    txt_Sun.setVisibility(View.INVISIBLE);
+                    break;
+                case Constant.MOON_CODE:
+                    Button but_Accept_Moon = getView().findViewById(R.id.but_Accept_Moon);
+                    but_Accept_Moon.setVisibility(View.INVISIBLE);
+                    Button but_Send_Moon = getView().findViewById(R.id.but_Send_Moon);
+                    but_Send_Moon.setVisibility(View.VISIBLE);
+                    TextView txt_Moon = getView().findViewById(R.id.moonTimer);
+                    txt_Moon.setVisibility(View.INVISIBLE);
+                    break;
+            }
+        }catch(NullPointerException npe){
+
         }
     }
 
@@ -283,12 +297,14 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         getContext().registerReceiver(br, mFilter);
-        Menu_Com target = mDBHandler.searchData("SUN");
-        if(target.getExpected_end() > System.currentTimeMillis()){
-            Intent intent = new Intent(getContext(),Broadcast_Service.class);
-            intent.setAction("callMoon");
-            intent.putExtra("duration", target.getExpected_end() - System.currentTimeMillis());
-            getContext().startService(intent);
+        long currTime = System.currentTimeMillis();
+        ArrayList<String> targetList = mDBHandler.searchData(currTime);
+
+        Menu_Com res  = mDBHandler.searchData("SUN");
+        for(String target : targetList){
+            Intent intent = new Intent("finish");
+            intent.putExtra("target",target);
+            getContext().sendBroadcast(intent);
         }
         Log.i(TAG, "Registered broacast receiver");
     }
@@ -298,14 +314,20 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
         public void onReceive(Context context, Intent intent) {
             String target = (String)intent.getExtras().get("target");
             switch(target){
-                case "callSun":
+                case "SUN":
                     if(intent.getAction().equals("finish")){
                         DynamicSineWaveView wavesView = getView().findViewById(R.id.sunSineWave);
                         wavesView.stopAnimation();
                         wavesView.setVisibility(View.INVISIBLE);
 
+                        long remain = 0;
+                        TextView txt = getView().findViewById(R.id.sunTimer);
+                        txt.setText(Tool.formatTimeToString(remain));
+
                         Button but_Accept =  getView().findViewById(R.id.but_Accept_Sun);
                         but_Accept.setVisibility(View.VISIBLE);
+
+                        mDBHandler.resetExpectedEnd("SUN");
                     }else {
                         long remain = intent.getExtras().getLong("countdown");
                         TextView txt = getView().findViewById(R.id.sunTimer);
@@ -313,7 +335,7 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
                     }
                     break;
 
-                case "callMoon":
+                case "MOON":
                     if(intent.getAction().equals("finish")){
                         DynamicSineWaveView wavesView = getView().findViewById(R.id.moonSineWave);
                         wavesView.stopAnimation();
