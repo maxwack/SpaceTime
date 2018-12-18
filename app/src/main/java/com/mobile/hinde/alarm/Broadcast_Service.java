@@ -13,10 +13,9 @@ public class Broadcast_Service extends Service {
     public static final String COUNTDOWN_TICK = "tick";
     public static final String COUNTDOWN_FINISH = "finish";
 
-    private long mDuration = 0;
-    Intent bi = new Intent(COUNTDOWN_TICK);
+    private final Intent bi = new Intent(COUNTDOWN_TICK);
 
-    CountDownTimer cdt = null;
+    private CountDownTimer cdt = null;
 
     @Override
     public void onCreate() {
@@ -34,13 +33,13 @@ public class Broadcast_Service extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mDuration = intent.getExtras().getLong("duration");
+        long mDuration = intent.getExtras().getLong("duration");
 
         final String target = intent.getAction();
 
         Log.i(TAG, "Starting timer...");
         cdt = new CountDownTimer(mDuration, 1000) {
-            private String mTarget = target;
+            private final String mTarget = target;
             @Override
             public void onTick(long millisUntilFinished) {
 

@@ -24,30 +24,24 @@ import org.json.JSONObject;
 public class Act_Image extends Activity {
 
     private ImageView mDialog;
-    private int mWidth = 0;
-    private int mHeight = 0;
 
-    private FirebaseStorage mStorage = FirebaseStorage.getInstance();
+    private final FirebaseStorage mStorage = FirebaseStorage.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
 
+        int mWidth = 0;
+        int mHeight = 0;
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         mWidth = (int)(dm.widthPixels * 0.8);
-//        mHeight = (int)(dm.heightPixels * 0.8);
+        mHeight = (int)(dm.heightPixels * 0.8);
         getWindow().setLayout(mWidth, mHeight);
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
+        Intent intent = getIntent();
         Image_List asyncTask = (Image_List) new Image_List(new AsyncResponse(){
 
             @Override
@@ -63,9 +57,6 @@ public class Act_Image extends Activity {
                             mDialog = findViewById(R.id.image);
                             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             mDialog.setImageBitmap(bmp);
-
-                            mHeight = (int)(bmp.getHeight() + 20);
-                            getWindow().setLayout(mWidth, mHeight);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -81,7 +72,13 @@ public class Act_Image extends Activity {
 
                 }
             }
-        }).execute("SUN");
+        }).execute(intent.getExtras().getString("target"));
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
 
 

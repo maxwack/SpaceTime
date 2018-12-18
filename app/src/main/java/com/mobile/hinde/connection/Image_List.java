@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class Image_List extends AsyncTask<String, Void, JSONObject> {
 
-    public AsyncResponse delegate = null;
+    private AsyncResponse delegate;
 
     public Image_List(AsyncResponse delegate){
         this.delegate = delegate;
@@ -49,9 +49,7 @@ public class Image_List extends AsyncTask<String, Void, JSONObject> {
 
 
 
-        }catch(MalformedURLException mue){
-
-        }catch(IOException ioe){
+        } catch(IOException ioe){
 
         }catch(JSONException jsone){
 

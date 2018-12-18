@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -124,7 +125,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return menu_com;
     }
 
-    public ArrayList<String> searchData(long endTime) {
+    public ArrayList<String> searchEndedData(long endTime) {
 //        String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME + " = " + "'" + name + "'";
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -150,6 +151,33 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return targetList;
+    }
+
+    public HashMap<String,Long> searchStartedData() {
+//        String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME + " = " + "'" + name + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] select_Col = {COLUMN_NAME, COLUMN_EXPECTED_END};
+
+        String selection = COLUMN_EXPECTED_END + " > 0 ";
+        Cursor cursor = db.query(
+                TABLE_NAME,   // The table to query
+                select_Col,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                null,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                null               // The sort order
+        );
+
+        HashMap<String,Long> targetMap = new HashMap<>();
+        while(cursor.moveToNext()){
+            cursor.moveToFirst();
+            targetMap.put(cursor.getString(0), cursor.getLong(1));
+        }
+        cursor.close();
+        db.close();
+        return targetMap;
     }
 
     public boolean deleteData(String name) {
@@ -182,6 +210,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String[] selectionArgs = { name };
         return db.update(TABLE_NAME, args, selection, selectionArgs) > 0;
     }
+
     public boolean resetExpectedEnd(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();

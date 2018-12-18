@@ -1,7 +1,6 @@
 package com.mobile.hinde.connection;
 
 import android.os.AsyncTask;
-import android.text.Html;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +17,7 @@ import java.util.Calendar;
 
 public class Duration_Site extends AsyncTask<String, Void, JSONObject> {
 
-    public AsyncResponse delegate = null;
+    private AsyncResponse delegate;
 
     public Duration_Site(AsyncResponse delegate){
         this.delegate = delegate;
@@ -43,11 +42,9 @@ public class Duration_Site extends AsyncTask<String, Void, JSONObject> {
 
             json_Res = new JSONObject(result.toString());
 
-        }catch(MalformedURLException mue){
+        }catch(MalformedURLException | JSONException mue){
 
         }catch(IOException ioe){
-
-        }catch(JSONException jsone){
 
         } finally {
             if(urlConnection != null) {

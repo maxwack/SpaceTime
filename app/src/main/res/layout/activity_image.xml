@@ -3,8 +3,8 @@
     android:id="@+id/image_dialog_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:gravity="center"
+    android:background="@android:color/black"
+    android:gravity="top|center"
     android:orientation="vertical">
 
     <ImageView
@@ -16,6 +16,17 @@
     <TextView
         android:id="@+id/text_legend"
         android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@android:color/black"
+        android:text="TextView"
+        android:textColor="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:background="@drawable/but_border"
+        android:fontFamily="@font/digitaldream"
+        android:text="SAVE"
+        android:textColor="@color/colorPrimary" />
 </LinearLayout>

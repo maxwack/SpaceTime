@@ -1,6 +1,5 @@
 package com.mobile.hinde.spacetime;
 
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,14 +20,12 @@ import com.mobile.hinde.alarm.Broadcast_Service;
 import com.mobile.hinde.connection.AsyncResponse;
 import com.mobile.hinde.connection.Duration_Site;
 import com.mobile.hinde.database.DBHandler;
-import com.mobile.hinde.database.Menu_Com;
 import com.mobile.hinde.utils.Constant;
 import com.mobile.hinde.utils.Tool;
 import com.mobile.hinde.view.DynamicSineWaveView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,15 +43,6 @@ import static android.content.ContentValues.TAG;
  * create an instance of this fragment.
  */
 public class Frag_Communicate extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
     private IntentFilter mFilter = new IntentFilter();
@@ -76,8 +64,6 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
     public static Frag_Communicate newInstance(String param1, String param2) {
         Frag_Communicate fragment = new Frag_Communicate();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,10 +71,6 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         mFilter.addAction(Broadcast_Service.COUNTDOWN_TICK);
         mFilter.addAction(Broadcast_Service.COUNTDOWN_FINISH);
 
@@ -100,6 +82,7 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
 
         View myView = inflater.inflate(R.layout.frag_communicate, container, false);
+        Context context = getContext();
 
         Button mSunSend =  myView.findViewById(R.id.but_Send_Sun);
         mSunSend.setOnClickListener(this);
@@ -109,9 +92,15 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
 
         DynamicSineWaveView mSunSineWave =  myView.findViewById(R.id.sunSineWave);
         mSunSineWave.setVisibility(View.INVISIBLE);
+        mSunSineWave.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
+        mSunSineWave.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(context,android.R.color.holo_red_dark), 4);
+        mSunSineWave.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(context,android.R.color.holo_blue_dark), 4);
 
         DynamicSineWaveView mMoonSineWave =  myView.findViewById(R.id.moonSineWave);
         mMoonSineWave.setVisibility(View.INVISIBLE);
+        mMoonSineWave.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
+        mMoonSineWave.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(context,android.R.color.holo_red_dark), 4);
+        mMoonSineWave.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(context,android.R.color.holo_blue_dark), 4);
 
         Button mSunAccept =  myView.findViewById(R.id.but_Accept_Sun);
         mSunAccept.setOnClickListener(this);
@@ -121,6 +110,32 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
         mMoonAccept.setOnClickListener(this);
         mMoonAccept.setVisibility(View.INVISIBLE);
 
+
+
+        long currTime = System.currentTimeMillis();
+        HashMap<String,Long> targetMap = mDBHandler.searchStartedData();
+        for(Map.Entry<String, Long> entry : targetMap.entrySet()){
+            if(currTime < entry.getValue()){
+                switch(entry.getKey()){
+                    case "SUN":
+                        mSunSend.setVisibility(View.INVISIBLE);
+                        mSunSineWave.setVisibility(View.VISIBLE);
+                        mSunSineWave.startAnimation();
+                        break;
+                    case "MOON":
+                        break;
+                }
+                long duration = entry.getValue() - currTime;
+                Intent intent = new Intent(getContext(),Broadcast_Service.class);
+                intent.setAction(entry.getKey());
+                intent.putExtra("duration",duration);
+                getContext().startService(intent);
+            }else{
+                Intent intent = new Intent("finish");
+                intent.putExtra("target",entry.getKey());
+                getContext().sendBroadcast(intent);
+            }
+        }
 
         // Inflate the layout for this fragment
         return myView;
@@ -173,19 +188,13 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
 
                             DynamicSineWaveView wavesView = getView().findViewById(R.id.sunSineWave);
                             wavesView.setVisibility(View.VISIBLE);
-                            wavesView.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
-                            wavesView.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(context,android.R.color.holo_red_dark), 4);
-                            wavesView.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(context,android.R.color.holo_blue_dark), 4);
                             wavesView.startAnimation();
 
                             TextView txt_Sun = getView().findViewById(R.id.sunTimer);
                             txt_Sun.setVisibility(View.VISIBLE);
                             mDBHandler.updateData("SUN", System.currentTimeMillis(), System.currentTimeMillis()+ 2 * duration);
                         }
-                        catch(NullPointerException npe){
-
-                        }
-                        catch(JSONException jsone){
+                        catch(NullPointerException | JSONException npe){
 
                         }
                     }
@@ -193,7 +202,9 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
                 break;
             }
             case R.id.but_Accept_Sun:{
-                startActivityForResult(new Intent(context, Act_Image.class), Constant.SUN_CODE);
+                Intent i = new Intent(context, Act_Image.class);
+                i.putExtra("target", "SUN");
+                startActivityForResult(i, Constant.SUN_CODE);
                 break;
             }
 
@@ -215,9 +226,6 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
 
                             DynamicSineWaveView wavesView = getView().findViewById(R.id.moonSineWave);
                             wavesView.setVisibility(View.VISIBLE);
-                            wavesView.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
-                            wavesView.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(context,android.R.color.holo_red_dark), 4);
-                            wavesView.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(context,android.R.color.holo_blue_dark), 4);
                             wavesView.startAnimation();
 
                             TextView txt = getView().findViewById(R.id.moonTimer);
@@ -298,9 +306,8 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
         super.onResume();
         getContext().registerReceiver(br, mFilter);
         long currTime = System.currentTimeMillis();
-        ArrayList<String> targetList = mDBHandler.searchData(currTime);
+        ArrayList<String> targetList = mDBHandler.searchEndedData(currTime);
 
-        Menu_Com res  = mDBHandler.searchData("SUN");
         for(String target : targetList){
             Intent intent = new Intent("finish");
             intent.putExtra("target",target);
