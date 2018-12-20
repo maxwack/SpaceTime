@@ -84,8 +84,12 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
         Button mMoonSend =  myView.findViewById(R.id.but_Send_MOON);
         mMoonSend.setOnClickListener(this);
 
+        Button mVoy1Send =  myView.findViewById(R.id.but_Send_VOYAGER1);
+        mVoy1Send.setOnClickListener(this);
+
         model.createSineWave(R.id.SUN_SineWave);
         model.createSineWave(R.id.MOON_SineWave);
+        model.createSineWave(R.id.VOYAGER1_SineWave);
 
         Button mSunAccept =  myView.findViewById(R.id.but_Accept_SUN);
         mSunAccept.setOnClickListener(this);
@@ -94,6 +98,10 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
         Button mMoonAccept =  myView.findViewById(R.id.but_Accept_MOON);
         mMoonAccept.setOnClickListener(this);
         mMoonAccept.setVisibility(View.INVISIBLE);
+
+        Button mVoy1Accept =  myView.findViewById(R.id.but_Accept_VOYAGER1);
+        mVoy1Accept.setOnClickListener(this);
+        mVoy1Accept.setVisibility(View.INVISIBLE);
 
 
         model.checkRemainingTimer();

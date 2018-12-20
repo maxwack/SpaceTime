@@ -163,4 +163,81 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:cardBackgroundColor="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/voy1_large"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/voy1text"
+                android:layout_width="168dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="100dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/digitaldream"
+                android:gravity="center_vertical"
+                android:text="@string/txt_voy1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp" />
+
+
+            <RelativeLayout
+                android:layout_width="103dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/but_Send_VOYAGER1"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/VOYAGER1_SineWave"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="-1dp"
+                    android:background="@drawable/but_border"
+                    android:fontFamily="@font/digitaldream"
+                    android:gravity="center"
+                    android:text="SEND"
+                    android:textColor="@color/colorPrimary" />
+
+                <Button
+                    android:id="@+id/but_Accept_VOYAGER1"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/VOYAGER1_SineWave"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="-1dp"
+                    android:background="@drawable/but_border"
+                    android:fontFamily="@font/digitaldream"
+                    android:gravity="center"
+                    android:text="ACCEPT"
+                    android:textColor="@color/colorPrimary" />
+
+                <com.mobile.hinde.view.DynamicSineWaveView
+                    android:id="@+id/VOYAGER1_SineWave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="11dp" />
+
+                <TextView
+                    android:id="@+id/VOYAGER1_Timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:fontFamily="@font/digitaldream"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="5dp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>
