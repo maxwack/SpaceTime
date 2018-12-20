@@ -8,24 +8,16 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.mobile.hinde.alarm.Broadcast_Service;
-import com.mobile.hinde.connection.AsyncResponse;
-import com.mobile.hinde.connection.Duration_Site;
 import com.mobile.hinde.database.DBHandler;
+import com.mobile.hinde.utils.Comm_model;
 import com.mobile.hinde.utils.Constant;
-import com.mobile.hinde.utils.Tool;
-import com.mobile.hinde.view.DynamicSineWaveView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +39,7 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
     private OnFragmentInteractionListener mListener;
     private IntentFilter mFilter = new IntentFilter();
     private DBHandler mDBHandler;
+    private Comm_model model;
 
     public Frag_Communicate() {
         // Required empty public constructor
@@ -75,6 +68,7 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
         mFilter.addAction(Broadcast_Service.COUNTDOWN_FINISH);
 
         mDBHandler = new DBHandler(getContext());
+        model = new Comm_model(this);
     }
 
     @Override
@@ -82,62 +76,28 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
 
         View myView = inflater.inflate(R.layout.frag_communicate, container, false);
-        Context context = getContext();
+        model.setView(myView);
 
-        Button mSunSend =  myView.findViewById(R.id.but_Send_Sun);
+        Button mSunSend =  myView.findViewById(R.id.but_Send_SUN);
         mSunSend.setOnClickListener(this);
 
-        Button mMoonSend =  myView.findViewById(R.id.but_Send_Moon);
+        Button mMoonSend =  myView.findViewById(R.id.but_Send_MOON);
         mMoonSend.setOnClickListener(this);
 
-        DynamicSineWaveView mSunSineWave =  myView.findViewById(R.id.sunSineWave);
-        mSunSineWave.setVisibility(View.INVISIBLE);
-        mSunSineWave.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
-        mSunSineWave.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(context,android.R.color.holo_red_dark), 4);
-        mSunSineWave.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(context,android.R.color.holo_blue_dark), 4);
+        model.createSineWave(R.id.SUN_SineWave);
+        model.createSineWave(R.id.MOON_SineWave);
 
-        DynamicSineWaveView mMoonSineWave =  myView.findViewById(R.id.moonSineWave);
-        mMoonSineWave.setVisibility(View.INVISIBLE);
-        mMoonSineWave.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
-        mMoonSineWave.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(context,android.R.color.holo_red_dark), 4);
-        mMoonSineWave.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(context,android.R.color.holo_blue_dark), 4);
-
-        Button mSunAccept =  myView.findViewById(R.id.but_Accept_Sun);
+        Button mSunAccept =  myView.findViewById(R.id.but_Accept_SUN);
         mSunAccept.setOnClickListener(this);
         mSunAccept.setVisibility(View.INVISIBLE);
 
-        Button mMoonAccept =  myView.findViewById(R.id.but_Accept_Moon);
+        Button mMoonAccept =  myView.findViewById(R.id.but_Accept_MOON);
         mMoonAccept.setOnClickListener(this);
         mMoonAccept.setVisibility(View.INVISIBLE);
 
 
+        model.checkRemainingTimer();
 
-        long currTime = System.currentTimeMillis();
-        HashMap<String,Long> targetMap = mDBHandler.searchStartedData();
-        for(Map.Entry<String, Long> entry : targetMap.entrySet()){
-            if(currTime < entry.getValue()){
-                switch(entry.getKey()){
-                    case "SUN":
-                        mSunSend.setVisibility(View.INVISIBLE);
-                        mSunSineWave.setVisibility(View.VISIBLE);
-                        mSunSineWave.startAnimation();
-                        break;
-                    case "MOON":
-                        break;
-                }
-                long duration = entry.getValue() - currTime;
-                Intent intent = new Intent(getContext(),Broadcast_Service.class);
-                intent.setAction(entry.getKey());
-                intent.putExtra("duration",duration);
-                getContext().startService(intent);
-            }else{
-                Intent intent = new Intent("finish");
-                intent.putExtra("target",entry.getKey());
-                getContext().sendBroadcast(intent);
-            }
-        }
-
-        // Inflate the layout for this fragment
         return myView;
     }
 
@@ -167,80 +127,18 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
 
     public void onClick(final View v){
         final Context context = getContext();
-        Map<String, Object> data = new HashMap<>();
         switch (v.getId()) {
-            case  R.id.but_Send_Sun: {
-                Duration_Site asyncTask = (Duration_Site) new Duration_Site(new AsyncResponse(){
-
-                    @Override
-                    public void processFinish(JSONObject output){
-                        try{
-                            long duration = output.getLong("SUN");
-                            Intent intent = new Intent(context,Broadcast_Service.class);
-                            intent.setAction("SUN");
-                            intent.putExtra("duration",duration * 2);
-//                              intent.putExtra("duration",1000l);
-
-                            context.startService(intent);
-
-                            Button but_Send_Sun = v.findViewById(R.id.but_Send_Sun);
-                            but_Send_Sun.setVisibility(View.INVISIBLE);
-
-                            DynamicSineWaveView wavesView = getView().findViewById(R.id.sunSineWave);
-                            wavesView.setVisibility(View.VISIBLE);
-                            wavesView.startAnimation();
-
-                            TextView txt_Sun = getView().findViewById(R.id.sunTimer);
-                            txt_Sun.setVisibility(View.VISIBLE);
-                            mDBHandler.updateData("SUN", System.currentTimeMillis(), System.currentTimeMillis()+ 2 * duration);
-                        }
-                        catch(NullPointerException | JSONException npe){
-
-                        }
-                    }
-                }).execute("SUN");
+            case  R.id.but_Send_SUN:
+                model.startSending(Constant.SUN_NAME);
                 break;
-            }
-            case R.id.but_Accept_Sun:{
+            case R.id.but_Accept_SUN:
                 Intent i = new Intent(context, Act_Image.class);
                 i.putExtra("target", "SUN");
                 startActivityForResult(i, Constant.SUN_CODE);
                 break;
-            }
-
-            case R.id.but_Send_Moon: {
-                Duration_Site asyncTask = (Duration_Site) new Duration_Site(new AsyncResponse(){
-
-                    @Override
-                    public void processFinish(JSONObject output){
-                        try{
-                            Intent intent = new Intent(context,Broadcast_Service.class);
-                            intent.setAction("MOON");
-                            intent.putExtra("duration",output.getLong("MOON"));
-//                              intent.putExtra("duration",1000l);
-
-                            context.startService(intent);
-
-                            Button but_Send = v.findViewById(R.id.but_Send_Moon);
-                            but_Send.setVisibility(View.INVISIBLE);
-
-                            DynamicSineWaveView wavesView = getView().findViewById(R.id.moonSineWave);
-                            wavesView.setVisibility(View.VISIBLE);
-                            wavesView.startAnimation();
-
-                            TextView txt = getView().findViewById(R.id.moonTimer);
-                            txt.setVisibility(View.VISIBLE);
-                        }
-                        catch(NullPointerException npe){
-
-                        }
-                        catch(JSONException jsone){
-
-                        }
-                    }
-                }).execute("MOON");
+            case R.id.but_Send_MOON:
+                model.startSending(Constant.MOON_NAME);
                 break;
-            }
         }
 
     }
@@ -250,28 +148,7 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
     {
         try {
             super.onActivityResult(requestCode, resultCode, data);
-            // check if the request code is same as what is passed  here it is 2
-            switch (requestCode) {
-                case Constant.SUN_CODE:
-                    Button but_Accept_Sun = getView().findViewById(R.id.but_Accept_Sun);
-                    but_Accept_Sun.setVisibility(View.INVISIBLE);
-                    Button but_Send_Sun = getView().findViewById(R.id.but_Send_Sun);
-                    but_Send_Sun.setVisibility(View.VISIBLE);
-
-                    mDBHandler.resetExpectedEnd("SUN");
-
-                    TextView txt_Sun = getView().findViewById(R.id.sunTimer);
-                    txt_Sun.setVisibility(View.INVISIBLE);
-                    break;
-                case Constant.MOON_CODE:
-                    Button but_Accept_Moon = getView().findViewById(R.id.but_Accept_Moon);
-                    but_Accept_Moon.setVisibility(View.INVISIBLE);
-                    Button but_Send_Moon = getView().findViewById(R.id.but_Send_Moon);
-                    but_Send_Moon.setVisibility(View.VISIBLE);
-                    TextView txt_Moon = getView().findViewById(R.id.moonTimer);
-                    txt_Moon.setVisibility(View.INVISIBLE);
-                    break;
-            }
+            model.resetMainView(Constant.NAME_FROM_CODE.get(requestCode));
         }catch(NullPointerException npe){
 
         }
@@ -280,7 +157,11 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
     @Override
     public void onPause(){
         super.onPause();
-        getContext().unregisterReceiver(br);
+        try {
+            getContext().unregisterReceiver(br);
+        }catch(Exception e){
+            //TODO
+        }
         Log.i(TAG, "Unregistered broacast receiver");
     }
 
@@ -296,7 +177,11 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
 
     @Override
     public void onDestroy() {
-        getContext().stopService(new Intent(getContext(), Broadcast_Service.class));
+        try {
+            getContext().stopService(new Intent(getContext(), Broadcast_Service.class));
+        }catch(Exception e){
+
+        }
         Log.i(TAG, "Stopped service");
         super.onDestroy();
     }
@@ -320,45 +205,15 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
         @Override
         public void onReceive(Context context, Intent intent) {
             String target = (String)intent.getExtras().get("target");
-            switch(target){
-                case "SUN":
-                    if(intent.getAction().equals("finish")){
-                        DynamicSineWaveView wavesView = getView().findViewById(R.id.sunSineWave);
-                        wavesView.stopAnimation();
-                        wavesView.setVisibility(View.INVISIBLE);
-
-                        long remain = 0;
-                        TextView txt = getView().findViewById(R.id.sunTimer);
-                        txt.setText(Tool.formatTimeToString(remain));
-
-                        Button but_Accept =  getView().findViewById(R.id.but_Accept_Sun);
-                        but_Accept.setVisibility(View.VISIBLE);
-
-                        mDBHandler.resetExpectedEnd("SUN");
-                    }else {
-                        long remain = intent.getExtras().getLong("countdown");
-                        TextView txt = getView().findViewById(R.id.sunTimer);
-                        txt.setText(Tool.formatTimeToString(remain));
-                    }
-                    break;
-
-                case "MOON":
-                    if(intent.getAction().equals("finish")){
-                        DynamicSineWaveView wavesView = getView().findViewById(R.id.moonSineWave);
-                        wavesView.stopAnimation();
-                        wavesView.setVisibility(View.INVISIBLE);
-
-                        Button but_Accept =  getView().findViewById(R.id.but_Accept_Moon);
-                        but_Accept.setVisibility(View.VISIBLE);
-                    }else {
-                        long remain = intent.getExtras().getLong("countdown");
-                        TextView txt = getView().findViewById(R.id.moonTimer);
-                        txt.setText(Tool.formatTimeToString(remain));
-                    }
-                    break;
-            }
+            String action = intent.getAction();
+            long remain = intent.getExtras().getLong("countdown");
+            model.updateTickingView(target, action, remain);
         }
     };
+
+    public DBHandler getmDBHandler(){
+        return mDBHandler;
+    }
 
     /**
      * This interface must be implemented by activities that contain this

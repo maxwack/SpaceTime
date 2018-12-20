@@ -38,10 +38,10 @@
                 android:layout_weight="1">
 
                 <Button
-                    android:id="@+id/but_Send_Sun"
+                    android:id="@+id/but_Send_SUN"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/sunSineWave"
+                    android:layout_alignEnd="@+id/SUN_SineWave"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="-1dp"
                     android:background="@drawable/but_border"
@@ -51,10 +51,10 @@
                     android:textColor="@color/colorPrimary" />
 
                 <Button
-                    android:id="@+id/but_Accept_Sun"
+                    android:id="@+id/but_Accept_SUN"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/sunSineWave"
+                    android:layout_alignEnd="@+id/SUN_SineWave"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="-1dp"
                     android:background="@drawable/but_border"
@@ -64,7 +64,7 @@
                     android:textColor="@color/colorPrimary" />
 
                 <com.mobile.hinde.view.DynamicSineWaveView
-                    android:id="@+id/sunSineWave"
+                    android:id="@+id/SUN_SineWave"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
@@ -73,7 +73,7 @@
                     android:layout_marginEnd="11dp" />
 
                 <TextView
-                    android:id="@+id/sunTimer"
+                    android:id="@+id/SUN_Timer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -116,10 +116,10 @@
                 android:layout_weight="1">
 
                 <Button
-                    android:id="@+id/but_Send_Moon"
+                    android:id="@+id/but_Send_MOON"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/moonSineWave"
+                    android:layout_alignEnd="@+id/MOON_SineWave"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="-1dp"
                     android:background="@drawable/but_border"
@@ -129,10 +129,10 @@
                     android:textColor="@color/colorPrimary" />
 
                 <Button
-                    android:id="@+id/but_Accept_Moon"
+                    android:id="@+id/but_Accept_MOON"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/moonSineWave"
+                    android:layout_alignEnd="@+id/MOON_SineWave"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="-1dp"
                     android:background="@drawable/but_border"
@@ -142,7 +142,7 @@
                     android:textColor="@color/colorPrimary" />
 
                 <com.mobile.hinde.view.DynamicSineWaveView
-                    android:id="@+id/moonSineWave"
+                    android:id="@+id/MOON_SineWave"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
@@ -151,7 +151,7 @@
                     android:layout_marginEnd="11dp" />
 
                 <TextView
-                    android:id="@+id/moonTimer"
+                    android:id="@+id/MOON_Timer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
