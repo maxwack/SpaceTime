@@ -104,20 +104,20 @@ public class Comm_model {
 
         String id = "but_Accept_" + targetName;
         int obj_ID = c.getResources().getIdentifier(id, "id",c.getPackageName());
-        Button but_Accept_Sun = v.findViewById(obj_ID);
-        but_Accept_Sun.setVisibility(View.INVISIBLE);
+        Button but_Accept = v.findViewById(obj_ID);
+        but_Accept.setVisibility(View.INVISIBLE);
 
         id = "but_Send_" + targetName;
         obj_ID = controller.getResources().getIdentifier(id, "id",c.getPackageName());
-        Button but_Send_Sun = v.findViewById(obj_ID);
-        but_Send_Sun.setVisibility(View.VISIBLE);
+        Button but_Send = v.findViewById(obj_ID);
+        but_Send.setVisibility(View.VISIBLE);
 
-        mdbHandler.resetExpectedEnd(Constant.SUN_NAME);
+        mdbHandler.resetExpectedEnd(targetName);
 
         id = targetName + "_Timer";
         obj_ID = controller.getResources().getIdentifier(id, "id",c.getPackageName());
-        TextView txt_Sun = v.findViewById(obj_ID);
-        txt_Sun.setVisibility(View.INVISIBLE);
+        TextView txt = v.findViewById(obj_ID);
+        txt.setVisibility(View.INVISIBLE);
     }
 
     public void updateTickingView(String targetName, String action, long timer){

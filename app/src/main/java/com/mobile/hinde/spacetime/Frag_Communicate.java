@@ -135,17 +135,31 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
 
     public void onClick(final View v){
         final Context context = getContext();
+        Intent i ;
         switch (v.getId()) {
             case  R.id.but_Send_SUN:
                 model.startSending(Constant.SUN_NAME);
                 break;
             case R.id.but_Accept_SUN:
-                Intent i = new Intent(context, Act_Image.class);
-                i.putExtra("target", "SUN");
+                i = new Intent(context, Act_Image.class);
+                i.putExtra("target", Constant.SUN_NAME);
                 startActivityForResult(i, Constant.SUN_CODE);
                 break;
             case R.id.but_Send_MOON:
                 model.startSending(Constant.MOON_NAME);
+                break;
+            case R.id.but_Accept_MOON:
+                i = new Intent(context, Act_Image.class);
+                i.putExtra("target", Constant.MOON_NAME);
+                startActivityForResult(i, Constant.MOON_CODE);
+            break;
+            case R.id.but_Send_VOYAGER1:
+                model.startSending(Constant.VOYAGER1_NAME);
+                break;
+            case R.id.but_Accept_VOYAGER1:
+                i = new Intent(context, Act_Image.class);
+                i.putExtra("target", Constant.VOYAGER1_NAME);
+                startActivityForResult(i, Constant.VOYAGER1_CODE);
                 break;
         }
 

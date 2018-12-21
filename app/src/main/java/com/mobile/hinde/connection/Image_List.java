@@ -44,11 +44,7 @@ public class Image_List extends AsyncTask<String, Void, JSONObject> {
             JSONArray json_Res = new JSONArray(result.toString());
             int maxVal = json_Res.length();
             int random = new Random().nextInt(maxVal);
-            res = json_Res.getJSONObject(0);
-
-
-
-
+            res = json_Res.getJSONObject(random);
         } catch(IOException ioe){
 
         }catch(JSONException jsone){
