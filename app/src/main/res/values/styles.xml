@@ -11,9 +11,22 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="PopUpTheme">
+    <style name="PopUpTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:actionBarStyle">@style/ImageTitleBar</item>
+        <item name="actionBarStyle">@style/ImageTitleBar</item>
+    </style>
+
+    <style name="ImageTitleBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="background">@drawable/img_title_bar</item>
+        <item name="titleTextStyle">@style/TitleTextBar</item>
+    </style>
+
+    <style name="TitleTextBar" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:fontFamily">@font/digitaldreamfat</item>
+        <item name="android:textSize">22sp</item>
     </style>
 
 

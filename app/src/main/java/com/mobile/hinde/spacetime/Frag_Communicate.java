@@ -20,8 +20,6 @@ import com.mobile.hinde.utils.Comm_model;
 import com.mobile.hinde.utils.Constant;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -131,6 +129,11 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
     }
 
     public void onClick(final View v){

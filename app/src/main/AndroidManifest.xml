@@ -20,7 +20,6 @@
 
          <activity android:name=".Act_Image"
              android:theme="@style/PopUpTheme">
-
          </activity>
 
         <service android:name="com.mobile.hinde.alarm.Broadcast_Service" >
