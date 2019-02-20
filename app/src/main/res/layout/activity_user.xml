@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_full"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/lblOperator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/digitaldream"
+        android:gravity="center_horizontal"
+        android:text="Choose an operator name:"
+        android:textColor="@color/colorPrimary" />
+
+    <EditText
+        android:id="@+id/inputField"
+        style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:fontFamily="@font/digitaldream"
+        android:inputType="textPersonName"
+        android:textColor="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/regUserID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:background="@drawable/but_border"
+        android:fontFamily="@font/digitaldream"
+        android:text="Start operations"
+        android:textColor="@color/colorPrimary"
+        android:onClick="registerUser"/>
+
+</LinearLayout>
