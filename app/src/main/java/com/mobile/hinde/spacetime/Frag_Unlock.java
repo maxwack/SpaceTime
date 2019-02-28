@@ -1,6 +1,5 @@
 package com.mobile.hinde.spacetime;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.auth.User;
 import com.mobile.hinde.utils.Constant;
 import com.mobile.hinde.utils.UserSettings;
 

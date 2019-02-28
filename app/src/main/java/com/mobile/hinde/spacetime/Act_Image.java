@@ -6,8 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,19 +17,28 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobile.hinde.connection.AsyncResponse;
 import com.mobile.hinde.connection.Image_List;
+import com.mobile.hinde.utils.UserSettings;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Act_Image extends AppCompatActivity {
 
     private ImageView mImage;
     private TextView mLegend;
     private Button mSave;
+
+    private String mTarget;
 
     private final FirebaseStorage mStorage = FirebaseStorage.getInstance();
 
@@ -54,12 +65,14 @@ public class Act_Image extends AppCompatActivity {
 
 
         Intent intent = getIntent();
+        mTarget = intent.getExtras().getString("target");
         Image_List asyncTask = (Image_List) new Image_List(new AsyncResponse(){
             @Override
             public void processFinish(JSONObject output) {        // Create a storage reference from our app
                 try {
                     StorageReference storageRef = mStorage.getReference();
                     StorageReference pathReference = storageRef.child(output.getString("image"));
+
                     final long ONE_MEGABYTE = 1024 * 1024;
                     pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
@@ -79,6 +92,8 @@ public class Act_Image extends AppCompatActivity {
                             // Handle any errors
                         }
                     });
+
+                    addImageToUserList(output.getString("image"));
                     getSupportActionBar().setTitle(output.getString("title"));
                     mLegend.setText(output.getString("legend"));
 
@@ -86,7 +101,7 @@ public class Act_Image extends AppCompatActivity {
 
                 }
             }
-        }).execute(intent.getExtras().getString("target"));
+        }).execute(mTarget);
 
         getWindow().setLayout(mMaxWidth, mMaxHeight);
     }
@@ -98,5 +113,26 @@ public class Act_Image extends AppCompatActivity {
 
     public void onDestroy(){
         super.onDestroy();
+    }
+
+    public void addImageToUserList(String imageName){
+        FirebaseFirestore dbInstance = FirebaseFirestore.getInstance();
+        DocumentReference docRef = dbInstance.collection("users").document(UserSettings.getInstance().getUserId()).collection(mTarget).document(imageName);
+
+        Map<String,Object> data = new HashMap<>();
+        data.put("id", imageName);
+        docRef.set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.w("NORMAL", "Added image to list");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("ERROR", "Error writing document", e);
+                    }
+                });
     }
 }

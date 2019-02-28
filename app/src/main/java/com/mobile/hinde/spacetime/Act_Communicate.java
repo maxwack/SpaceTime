@@ -9,18 +9,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.support.design.widget.TabLayout;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.mobile.hinde.utils.Tool;
 import com.mobile.hinde.utils.UserSettings;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,5 +88,10 @@ public class Act_Communicate extends AppCompatActivity
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    public void showListImage(View v){
+        Intent i = new Intent(getApplicationContext(), Act_ImageList.class);
+        startActivity(i);
     }
 }

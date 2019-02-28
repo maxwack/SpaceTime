@@ -25,6 +25,9 @@
              android:theme="@style/PopUpTheme">
          </activity>
 
+         <activity android:name=".Act_ImageList">
+         </activity>
+
         <service android:name="com.mobile.hinde.alarm.Broadcast_Service" >
             <intent-filter>
                 <action android:name="callSun" />
