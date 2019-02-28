@@ -7,19 +7,35 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.hinde.alarm.Broadcast_Service;
 import com.mobile.hinde.database.DBHandler;
 import com.mobile.hinde.utils.Comm_model;
 import com.mobile.hinde.utils.Constant;
+import com.mobile.hinde.utils.Tool;
+import com.mobile.hinde.utils.UserSettings;
+import com.mobile.hinde.view.DynamicSineWaveView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -29,83 +45,83 @@ import static android.content.ContentValues.TAG;
  * Activities that contain this fragment must implement the
  * {@link Frag_Communicate.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Frag_Communicate#newInstance} factory method to
- * create an instance of this fragment.
  */
-public class Frag_Communicate extends Fragment implements View.OnClickListener {
+public class Frag_Communicate extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private IntentFilter mFilter = new IntentFilter();
-    private DBHandler mDBHandler;
-    private Comm_model model;
+
 
     public Frag_Communicate() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Frag_Communicate.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Frag_Communicate newInstance(String param1, String param2) {
-        Frag_Communicate fragment = new Frag_Communicate();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFilter.addAction(Broadcast_Service.COUNTDOWN_TICK);
-        mFilter.addAction(Broadcast_Service.COUNTDOWN_FINISH);
-
-        mDBHandler = new DBHandler(getContext());
-        model = new Comm_model(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View myView = inflater.inflate(R.layout.frag_communicate, container, false);
-        model.setView(myView);
+        final View myView = inflater.inflate(R.layout.frag_communicate, container, false);
 
-        Button mSunSend =  myView.findViewById(R.id.but_Send_SUN);
-        mSunSend.setOnClickListener(this);
+        FirebaseFirestore dbInstance = FirebaseFirestore.getInstance();
+        DocumentReference docRef = dbInstance.collection("users").document(UserSettings.getInstance().getUserId());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String,Object> userMap = document.getData();
 
-        Button mMoonSend =  myView.findViewById(R.id.but_Send_MOON);
-        mMoonSend.setOnClickListener(this);
+                        UserSettings.getInstance().setMoney((long)userMap.get("money"));
 
-        Button mVoy1Send =  myView.findViewById(R.id.but_Send_VOYAGER1);
-        mVoy1Send.setOnClickListener(this);
+                        TextView moneyCount = getActivity().findViewById(R.id.moneyCount);
+                        moneyCount.setText(Tool.formatMoneyCount(UserSettings.getInstance().getMoney()));
 
-        model.createSineWave(R.id.SUN_SineWave);
-        model.createSineWave(R.id.MOON_SineWave);
-        model.createSineWave(R.id.VOYAGER1_SineWave);
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-        Button mSunAccept =  myView.findViewById(R.id.but_Accept_SUN);
-        mSunAccept.setOnClickListener(this);
-        mSunAccept.setVisibility(View.INVISIBLE);
+                        Frag_Send_Accept acceptSendSunFrag = new Frag_Send_Accept();
+                        Bundle bundleSun = new Bundle();
+                        bundleSun.putString("target", Constant.SUN_NAME);
+                        acceptSendSunFrag.setArguments(bundleSun);
+                        transaction.replace(R.id.frag_SUN, acceptSendSunFrag);
 
-        Button mMoonAccept =  myView.findViewById(R.id.but_Accept_MOON);
-        mMoonAccept.setOnClickListener(this);
-        mMoonAccept.setVisibility(View.INVISIBLE);
+                        Frag_Send_Accept acceptSendMoonFrag = new Frag_Send_Accept();
+                        Bundle bundleMoon = new Bundle();
+                        bundleMoon.putString("target", Constant.MOON_NAME);
+                        acceptSendMoonFrag.setArguments(bundleMoon);
+                        transaction.replace(R.id.frag_MOON, acceptSendMoonFrag);
 
-        Button mVoy1Accept =  myView.findViewById(R.id.but_Accept_VOYAGER1);
-        mVoy1Accept.setOnClickListener(this);
-        mVoy1Accept.setVisibility(View.INVISIBLE);
+                        if(userMap.containsKey(Constant.VOYAGER1_NAME)){
+                            Frag_Send_Accept acceptSendVoy1Frag = new Frag_Send_Accept();
+                            Bundle bundleVoy1 = new Bundle();
+                            bundleVoy1.putString("target", Constant.VOYAGER1_NAME);
+                            acceptSendVoy1Frag.setArguments(bundleVoy1);
+                            transaction.replace(R.id.frag_VOYAGER1, acceptSendVoy1Frag);
+                        }else{
+                            Frag_Unlock unlockVoy1Frag = new Frag_Unlock();
+                            Bundle bundleVoy1 = new Bundle();
+                            bundleVoy1.putString("target", Constant.VOYAGER1_NAME);
+                            unlockVoy1Frag.setArguments(bundleVoy1);
+                            transaction.replace(R.id.frag_VOYAGER1, unlockVoy1Frag);
+                            transaction.addToBackStack(null);
+                        }
 
-
-        model.checkRemainingTimer();
+                        transaction.commit();
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
 
         return myView;
-    }
+   }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -129,115 +145,6 @@ public class Frag_Communicate extends Fragment implements View.OnClickListener {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
-    }
-
-    public void onClick(final View v){
-        final Context context = getContext();
-        Intent i ;
-        switch (v.getId()) {
-            case  R.id.but_Send_SUN:
-                model.startSending(Constant.SUN_NAME);
-                break;
-            case R.id.but_Accept_SUN:
-                i = new Intent(context, Act_Image.class);
-                i.putExtra("target", Constant.SUN_NAME);
-                startActivityForResult(i, Constant.SUN_CODE);
-                break;
-            case R.id.but_Send_MOON:
-                model.startSending(Constant.MOON_NAME);
-                break;
-            case R.id.but_Accept_MOON:
-                i = new Intent(context, Act_Image.class);
-                i.putExtra("target", Constant.MOON_NAME);
-                startActivityForResult(i, Constant.MOON_CODE);
-            break;
-            case R.id.but_Send_VOYAGER1:
-                model.startSending(Constant.VOYAGER1_NAME);
-                break;
-            case R.id.but_Accept_VOYAGER1:
-                i = new Intent(context, Act_Image.class);
-                i.putExtra("target", Constant.VOYAGER1_NAME);
-                startActivityForResult(i, Constant.VOYAGER1_CODE);
-                break;
-        }
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        try {
-            super.onActivityResult(requestCode, resultCode, data);
-            model.resetMainView(Constant.NAME_FROM_CODE.get(requestCode));
-        }catch(NullPointerException npe){
-
-        }
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        try {
-            getContext().unregisterReceiver(br);
-        }catch(Exception e){
-            //TODO
-        }
-        Log.i(TAG, "Unregistered broacast receiver");
-    }
-
-    @Override
-    public void onStop() {
-        try {
-            getContext().unregisterReceiver(br);
-        } catch (Exception e) {
-            // Receiver was probably already stopped in onPause()
-        }
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        try {
-            getContext().stopService(new Intent(getContext(), Broadcast_Service.class));
-        }catch(Exception e){
-
-        }
-        Log.i(TAG, "Stopped service");
-        super.onDestroy();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getContext().registerReceiver(br, mFilter);
-        long currTime = System.currentTimeMillis();
-        ArrayList<String> targetList = mDBHandler.searchEndedData(currTime);
-
-        for(String target : targetList){
-            Intent intent = new Intent("finish");
-            intent.putExtra("target",target);
-            getContext().sendBroadcast(intent);
-        }
-        Log.i(TAG, "Registered broacast receiver");
-    }
-
-    private BroadcastReceiver br = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String target = (String)intent.getExtras().get("target");
-            String action = intent.getAction();
-            long remain = intent.getExtras().getLong("countdown");
-            model.updateTickingView(target, action, remain);
-        }
-    };
-
-    public DBHandler getmDBHandler(){
-        return mDBHandler;
     }
 
     /**

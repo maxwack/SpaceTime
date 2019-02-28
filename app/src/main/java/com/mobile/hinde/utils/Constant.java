@@ -21,6 +21,13 @@ public class Constant {
     public static final String VOYAGER1_NAME = "VOYAGER1";
     public static final String VOYAGER2_NAME = "VOYAGER2";
 
+    public static final long SUN_MONEY = 50;
+    public static final long MOON_MONEY = 10;
+    public static final long VOYAGER1_MONEY= 100;
+
+
+    public static final long VOYAGER1_UNLOCK = 500;
+
     public static final Map<Integer, String> NAME_FROM_CODE;
 
     static {
@@ -35,7 +42,6 @@ public class Constant {
         NAME_FROM_CODE = Collections.unmodifiableMap(map);
     }
 
-
     public static final Map<String, Integer> CODE_FROM_NAME;
 
     static {
@@ -48,5 +54,25 @@ public class Constant {
         map.put(VOYAGER2_NAME, VOYAGER2_CODE);
 
         CODE_FROM_NAME = Collections.unmodifiableMap(map);
+    }
+
+    public static final Map<String, Long> MONEY_FROM_NAME;
+
+    static {
+        Map<String, Long> map = new HashMap();
+        map.put(SUN_NAME, SUN_MONEY);
+        map.put(MOON_NAME, MOON_MONEY);
+        map.put(VOYAGER1_NAME, VOYAGER1_MONEY);
+
+        MONEY_FROM_NAME = Collections.unmodifiableMap(map);
+    }
+
+    public static final Map<String, Long> UNLOCK_FROM_NAME;
+
+    static {
+        Map<String, Long> map = new HashMap();
+        map.put(VOYAGER1_NAME, VOYAGER1_UNLOCK);
+
+        UNLOCK_FROM_NAME = Collections.unmodifiableMap(map);
     }
 }

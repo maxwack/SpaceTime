@@ -194,18 +194,19 @@ public class DBHandler extends SQLiteOpenHelper {
         return targetList;
     }
 
-    public HashMap<String,Long> searchStartedData() {
+    public HashMap<String,Long> searchStartedData(String target) {
 //        String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME + " = " + "'" + name + "'";
         SQLiteDatabase db = this.getReadableDatabase();
 
         String[] select_Col = {COLUMN_NAME, COLUMN_EXPECTED_END};
 
-        String selection = COLUMN_EXPECTED_END + " > 0 ";
+        String selection = COLUMN_EXPECTED_END + " > 0 AND " + COLUMN_NAME + " = ? ";
+        String[] selectionArgs = { target };
         Cursor cursor = db.query(
                 TABLE_NAME_COM,   // The table to query
                 select_Col,             // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
-                null,          // The values for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
                 null,                   // don't group the rows
                 null,                   // don't filter by row groups
                 null               // The sort order
@@ -213,7 +214,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
         HashMap<String,Long> targetMap = new HashMap<>();
         while(cursor.moveToNext()){
-            cursor.moveToFirst();
             targetMap.put(cursor.getString(0), cursor.getLong(1));
         }
         cursor.close();

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/but_UNLOCK"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/but_border"
+        android:fontFamily="@font/digitaldream"
+        android:gravity="center"
+        android:text="UNLOCK"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/txt_AMOUNT"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="500"
+        android:textColor="@color/colorPrimary" />
+</LinearLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/but_Send"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/SineWave"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="-1dp"
+            android:background="@drawable/but_border"
+            android:fontFamily="@font/digitaldream"
+            android:gravity="center"
+            android:text="SEND"
+            android:textColor="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/but_Accept"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/SineWave"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="-1dp"
+            android:background="@drawable/but_border"
+            android:fontFamily="@font/digitaldream"
+            android:gravity="center"
+            android:text="ACCEPT"
+            android:textColor="@color/colorPrimary"
+            android:visibility="invisible" />
+
+        <com.mobile.hinde.view.DynamicSineWaveView
+            android:id="@+id/SineWave"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="11dp" />
+
+        <TextView
+            android:id="@+id/Timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/digitaldream"
+            android:textColor="@color/colorPrimary" />
+</RelativeLayout>

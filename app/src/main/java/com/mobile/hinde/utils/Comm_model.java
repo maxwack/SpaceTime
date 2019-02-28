@@ -2,16 +2,27 @@ package com.mobile.hinde.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.auth.User;
 import com.mobile.hinde.alarm.Broadcast_Service;
 import com.mobile.hinde.connection.AsyncResponse;
 import com.mobile.hinde.connection.Duration_Site;
 import com.mobile.hinde.database.DBHandler;
-import com.mobile.hinde.spacetime.Frag_Communicate;
+import com.mobile.hinde.spacetime.Frag_Send_Accept;
+import com.mobile.hinde.spacetime.R;
 import com.mobile.hinde.view.DynamicSineWaveView;
 
 import org.json.JSONException;
@@ -22,12 +33,12 @@ import java.util.Map;
 
 public class Comm_model {
 
-    private Frag_Communicate controller;
+    private Frag_Send_Accept controller;
     private Context c;
     private View v;
     private DBHandler mdbHandler;
 
-    public Comm_model(Frag_Communicate controller){
+    public Comm_model(Frag_Send_Accept controller){
         this.controller = controller;
         this.c = controller.getContext();
         this.mdbHandler = controller.getmDBHandler();
@@ -46,20 +57,14 @@ public class Comm_model {
 
                     c.startService(intent);
 
-                    String id = "but_Send_" + targetName;
-                    int obj_ID = controller.getResources().getIdentifier(id, "id",c.getPackageName());
-                    Button but_Send_Sun = v.findViewById(obj_ID);
-                    but_Send_Sun.setVisibility(View.INVISIBLE);
+                    Button but_Send = v.findViewById(R.id.but_Send);
+                    but_Send.setVisibility(View.INVISIBLE);
 
-                    id = targetName + "_SineWave";
-                    obj_ID = controller.getResources().getIdentifier(id, "id", c.getPackageName());
-                    DynamicSineWaveView wavesView = v.findViewById(obj_ID);
+                    DynamicSineWaveView wavesView = v.findViewById(R.id.SineWave);
                     wavesView.setVisibility(View.VISIBLE);
                     wavesView.startAnimation();
 
-                    id = targetName + "_Timer";
-                    obj_ID = controller.getResources().getIdentifier(id, "id", c.getPackageName());
-                    TextView txt_Sun = v.findViewById(obj_ID);
+                    TextView txt_Sun = v.findViewById(R.id.Timer);
                     txt_Sun.setVisibility(View.VISIBLE);
                     mdbHandler.updateData(targetName, System.currentTimeMillis(), System.currentTimeMillis()+ 2 * duration);
                 }
@@ -70,31 +75,28 @@ public class Comm_model {
         }).execute(targetName);
     }
 
-    public void checkRemainingTimer(){
+    public void checkRemainingTimer(String targetName){
         long currTime = System.currentTimeMillis();
-        HashMap<String,Long> targetMap = mdbHandler.searchStartedData();
-        for(Map.Entry<String, Long> entry : targetMap.entrySet()){
-            if(currTime < entry.getValue()){
+        HashMap<String,Long> targetMap = mdbHandler.searchStartedData(targetName);
 
-                String id = "but_Send_" + entry.getKey();
-                int obj_ID = controller.getResources().getIdentifier(id, "id",c.getPackageName());
-                Button but_send_Sun = v.findViewById(obj_ID);
-                but_send_Sun.setVisibility(View.INVISIBLE);
+        if(targetMap.containsKey(targetName)){
+            long value = targetMap.get(targetName);
+            if(currTime < value){
+                Button but_send = v.findViewById(R.id.but_Send);
+                but_send.setVisibility(View.INVISIBLE);
 
-                id = entry.getKey() + "_SineWave";
-                obj_ID = controller.getResources().getIdentifier(id, "id", c.getPackageName());
-                DynamicSineWaveView wavesView = v.findViewById(obj_ID);
+                DynamicSineWaveView wavesView = v.findViewById(R.id.SineWave);
                 wavesView.setVisibility(View.VISIBLE);
                 wavesView.startAnimation();
 
-                long duration = entry.getValue() - currTime;
+                long duration = value - currTime;
                 Intent intent = new Intent(c,Broadcast_Service.class);
-                intent.setAction(entry.getKey());
+                intent.setAction(targetName);
                 intent.putExtra("duration",duration);
                 c.startService(intent);
             }else{
                 Intent intent = new Intent("finish");
-                intent.putExtra("target",entry.getKey());
+                intent.putExtra("target",targetName);
                 c.sendBroadcast(intent);
             }
         }
@@ -102,59 +104,43 @@ public class Comm_model {
 
     public void resetMainView(String targetName){
 
-        String id = "but_Accept_" + targetName;
-        int obj_ID = c.getResources().getIdentifier(id, "id",c.getPackageName());
-        Button but_Accept = v.findViewById(obj_ID);
+        Button but_Accept = v.findViewById(R.id.but_Accept);
         but_Accept.setVisibility(View.INVISIBLE);
 
-        id = "but_Send_" + targetName;
-        obj_ID = controller.getResources().getIdentifier(id, "id",c.getPackageName());
-        Button but_Send = v.findViewById(obj_ID);
+        Button but_Send = v.findViewById(R.id.but_Send);
         but_Send.setVisibility(View.VISIBLE);
 
         mdbHandler.resetExpectedEnd(targetName);
 
-        id = targetName + "_Timer";
-        obj_ID = controller.getResources().getIdentifier(id, "id",c.getPackageName());
-        TextView txt = v.findViewById(obj_ID);
+        TextView txt = v.findViewById(R.id.Timer);
         txt.setVisibility(View.INVISIBLE);
     }
 
     public void updateTickingView(String targetName, String action, long timer){
         if(action.equals("finish")){
-
-            String id = targetName + "_SineWave";
-            int obj_ID = c.getResources().getIdentifier(id, "id",c.getPackageName());
-            DynamicSineWaveView wavesView = v.findViewById(obj_ID);
+            DynamicSineWaveView wavesView = v.findViewById(R.id.SineWave);
             wavesView.stopAnimation();
             wavesView.setVisibility(View.INVISIBLE);
 
             long remain = 0;
-            id = targetName + "_Timer";
-            obj_ID = c.getResources().getIdentifier(id, "id",c.getPackageName());
-            TextView txt = v.findViewById(obj_ID);
+            TextView txt = v.findViewById(R.id.Timer);
             txt.setText(Tool.formatTimeToString(remain));
 
-            id = "but_Accept_" + targetName;
-            obj_ID = c.getResources().getIdentifier(id, "id",c.getPackageName());
-            Button but_Accept =  v.findViewById(obj_ID);
+            Button but_Accept =  v.findViewById(R.id.but_Accept);
             but_Accept.setVisibility(View.VISIBLE);
 
-            mdbHandler.resetExpectedEnd("SUN");
+            mdbHandler.resetExpectedEnd(targetName);
         }else {
-            String id = targetName + "_Timer";
-            int obj_ID = c.getResources().getIdentifier(id, "id",c.getPackageName());
-            TextView txt = v.findViewById(obj_ID);
+            TextView txt = v.findViewById(R.id.Timer);
             txt.setText(Tool.formatTimeToString(timer));
         }
     }
 
-    public void createSineWave(int id){
-        DynamicSineWaveView mSineWave =  v.findViewById(id);
-        mSineWave.setVisibility(View.INVISIBLE);
-        mSineWave.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
-        mSineWave.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(c,android.R.color.holo_red_dark), 4);
-        mSineWave.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(c,android.R.color.holo_blue_dark), 4);
+    public void createSineWave(DynamicSineWaveView wave){
+        wave.setVisibility(View.INVISIBLE);
+        wave.addWave(0.5f, 0.5f, 0, 0, 0); // Fist wave is for the shape of other waves.
+        wave.addWave(0.5f, 2f, 0.5f, ContextCompat.getColor(c,android.R.color.holo_red_dark), 4);
+        wave.addWave(0.1f, 2f, 0.7f, ContextCompat.getColor(c,android.R.color.holo_blue_dark), 4);
     }
 
     public void setView(View v){

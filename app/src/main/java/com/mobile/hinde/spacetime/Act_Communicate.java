@@ -13,7 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.support.design.widget.TabLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mobile.hinde.utils.Tool;
+import com.mobile.hinde.utils.UserSettings;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +40,15 @@ public class Act_Communicate extends AppCompatActivity
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        Toolbar bar = findViewById(R.id.appToolBar);
-        Intent intent = getIntent();
-        bar.setTitle(intent.getAction());
+        TextView userTxt = findViewById(R.id.userIdTxt);
+        userTxt.setText(getIntent().getAction());
+    }
 
-        setSupportActionBar(bar);
+    @Override
+    protected void onResume(){
+        super.onResume();
+        TextView moneyCount = findViewById(R.id.moneyCount);
+        moneyCount.setText(Tool.formatMoneyCount(UserSettings.getInstance().getMoney()));
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -55,29 +66,6 @@ public class Act_Communicate extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri){
         //you can leave it empty
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_listImage) {
-            Toast.makeText(Act_Communicate.this, "Action clicked", Toast.LENGTH_LONG).show();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
