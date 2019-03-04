@@ -95,7 +95,7 @@ public class Comm_model {
                 intent.putExtra("duration",duration);
                 c.startService(intent);
             }else{
-                Intent intent = new Intent("finish");
+                Intent intent = new Intent(Broadcast_Service.COUNTDOWN_FINISH);
                 intent.putExtra("target",targetName);
                 c.sendBroadcast(intent);
             }

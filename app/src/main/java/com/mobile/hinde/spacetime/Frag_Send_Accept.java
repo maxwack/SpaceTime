@@ -27,24 +27,20 @@ import com.mobile.hinde.utils.Tool;
 import com.mobile.hinde.utils.UserSettings;
 import com.mobile.hinde.view.DynamicSineWaveView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
 
 public class Frag_Send_Accept extends Fragment implements View.OnClickListener  {
     private String mTarget;
 
-    private IntentFilter mFilter = new IntentFilter();
     private DBHandler mDBHandler;
+
     private Comm_model model;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFilter.addAction(Broadcast_Service.COUNTDOWN_TICK);
-        mFilter.addAction(Broadcast_Service.COUNTDOWN_FINISH);
 
         mDBHandler = new DBHandler(getContext());
         model = new Comm_model(this);
@@ -66,7 +62,6 @@ public class Frag_Send_Accept extends Fragment implements View.OnClickListener  
 
         Button mAccept =  view.findViewById(R.id.but_Accept);
         mAccept.setOnClickListener(this);
-
         model.checkRemainingTimer(mTarget);
         return view ;
     }
@@ -118,70 +113,12 @@ public class Frag_Send_Accept extends Fragment implements View.OnClickListener  
         }
     }
 
-    @Override
-    public void onPause(){
-        super.onPause();
-        try {
-            getContext().unregisterReceiver(br);
-        }catch(Exception e){
-            //TODO
-        }
-        Log.i(TAG, "Unregistered broacast receiver");
-    }
-
-    @Override
-    public void onStop() {
-        try {
-            getContext().unregisterReceiver(br);
-        } catch (Exception e) {
-            // Receiver was probably already stopped in onPause()
-        }
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        try {
-            getContext().stopService(new Intent(getContext(), Broadcast_Service.class));
-        }catch(Exception e){
-
-        }
-        Log.i(TAG, "Stopped service");
-        super.onDestroy();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getContext().registerReceiver(br, mFilter);
-        long currTime = System.currentTimeMillis();
-        ArrayList<String> targetList = mDBHandler.searchEndedData(currTime);
-
-        for(String target : targetList){
-            Intent intent = new Intent("finish");
-            intent.putExtra("target",target);
-            getContext().sendBroadcast(intent);
-        }
-        Log.i(TAG, "Registered broacast receiver");
-    }
-
-    private BroadcastReceiver br = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String target = (String)intent.getExtras().get("target");
-
-            if(!mTarget.equals(target)){
-                return;
-            }
-
-            String action = intent.getAction();
-            long remain = intent.getExtras().getLong("countdown");
-            model.updateTickingView(target, action, remain);
-        }
-    };
-
     public DBHandler getmDBHandler(){
         return mDBHandler;
     }
 
+
+    public void updateTickingView(String targetName, String action, long timer){
+        model.updateTickingView(targetName,action,timer);
+    }
 }

@@ -1,5 +1,6 @@
 package com.mobile.hinde.spacetime;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,7 +20,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.mobile.hinde.utils.UserSettings;
-import com.mobile.hinde.view.Line;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +53,9 @@ public class Frag_ImageList extends Fragment {
 
                     // Create LinearLayout
                     LinearLayout ll = new LinearLayout(getActivity());
-                    ll.setOrientation(LinearLayout.HORIZONTAL);
+                    ll.setOrientation(LinearLayout.VERTICAL);
                     TextView title = createTextView();
-                    Line line = new Line(getActivity());
-                    line.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+                    View line = createLine();
 
                     LinearLayout root = getView().findViewById(R.id.rootLayer);
 
@@ -97,7 +96,7 @@ public class Frag_ImageList extends Fragment {
 
     private View createLine(){
         View v = new View(getActivity());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,2);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,5);
         v .setLayoutParams(params);
         v.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
         return v;

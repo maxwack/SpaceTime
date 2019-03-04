@@ -115,7 +115,6 @@ public class DBHandler extends SQLiteOpenHelper {
         );
         App_Settings setting = new App_Settings();
         if (cursor.moveToFirst()) {
-            cursor.moveToFirst();
             setting.setValue(cursor.getString(1));
             cursor.close();
         } else {
@@ -154,7 +153,6 @@ public class DBHandler extends SQLiteOpenHelper {
         );
         Menu_Com menu_com = new Menu_Com();
         if (cursor.moveToFirst()) {
-            cursor.moveToFirst();
             menu_com.setName(cursor.getString(0));
             menu_com.setLast_execute(cursor.getLong(1));
             menu_com.setExpected_end(cursor.getLong(2));
@@ -186,7 +184,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
         ArrayList<String> targetList = new ArrayList<>();
         while(cursor.moveToNext()){
-            cursor.moveToFirst();
             targetList.add(cursor.getString(0));
         }
         cursor.close();

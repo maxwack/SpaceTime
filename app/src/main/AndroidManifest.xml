@@ -25,19 +25,12 @@
              android:theme="@style/PopUpTheme">
          </activity>
 
-         <activity android:name=".Frag_ImageList">
-         </activity>
-
         <service android:name="com.mobile.hinde.alarm.Broadcast_Service" >
             <intent-filter>
-                <action android:name="callSun" />
+                <action android:name="tick" />
+                <action android:name="finish" />
             </intent-filter>
         </service>
 
-        <receiver android:name="com.mobile.hinde.alarm.Alarm_receiver">
-            <intent-filter>
-                <action android:name="callSun" />
-            </intent-filter>
-        </receiver>
     </application>
 </manifest>
