@@ -105,4 +105,37 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:cardBackgroundColor="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/insight"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/insighttext"
+                android:layout_width="182dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="100dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/digitaldream"
+                android:gravity="center_vertical"
+                android:text="@string/txt_insight"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp" />
+
+            <FrameLayout
+                android:id="@+id/frag_INSIGHT"
+                android:layout_width="120dp"
+                android:layout_height="match_parent">
+            </FrameLayout>
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>

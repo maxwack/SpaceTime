@@ -1,9 +1,7 @@
 package com.mobile.hinde.spacetime;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -19,7 +17,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.mobile.hinde.alarm.Broadcast_Service;
 import com.mobile.hinde.connection.AsyncResponse;
 import com.mobile.hinde.connection.Image_List;
 import com.mobile.hinde.database.DBHandler;
