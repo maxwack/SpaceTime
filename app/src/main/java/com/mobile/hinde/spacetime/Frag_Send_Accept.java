@@ -20,12 +20,17 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.mobile.hinde.alarm.Broadcast_Service;
+import com.mobile.hinde.connection.AsyncResponse;
+import com.mobile.hinde.connection.Image_List;
 import com.mobile.hinde.database.DBHandler;
 import com.mobile.hinde.utils.Comm_model;
 import com.mobile.hinde.utils.Constant;
 import com.mobile.hinde.utils.Tool;
 import com.mobile.hinde.utils.UserSettings;
 import com.mobile.hinde.view.DynamicSineWaveView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +73,6 @@ public class Frag_Send_Accept extends Fragment implements View.OnClickListener  
 
     public void onClick(final View v){
         final Context context = getContext();
-        Intent i ;
         switch (v.getId()) {
             case  R.id.but_Send:
                 model.startSending(mTarget);
@@ -95,9 +99,24 @@ public class Frag_Send_Accept extends Fragment implements View.OnClickListener  
                             }
                         });
 
-                i = new Intent(context, Act_Image.class);
-                i.putExtra("target", mTarget);
-                startActivityForResult(i, Constant.CODE_FROM_NAME.get(mTarget));
+
+
+
+                new Image_List(new AsyncResponse(){
+                    @Override
+                    public void processFinish(JSONObject output) {        // Create a storage reference from our app
+                        try {
+                            addImageToUserList(output.getString("image"));
+                            Intent i = new Intent(context, Act_Image.class);
+                            i.putExtra("name", output.getString("image"));
+                            i.putExtra("title", output.getString("title"));
+                            i.putExtra("legend", output.getString("legend"));
+                            startActivityForResult(i, Constant.CODE_FROM_NAME.get(mTarget));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).execute(mTarget);
                 break;
         }
     }
@@ -120,5 +139,27 @@ public class Frag_Send_Accept extends Fragment implements View.OnClickListener  
 
     public void updateTickingView(String targetName, String action, long timer){
         model.updateTickingView(targetName,action,timer);
+    }
+
+
+    public void addImageToUserList(String imageName){
+        FirebaseFirestore dbInstance = FirebaseFirestore.getInstance();
+        DocumentReference docRef = dbInstance.collection("users").document(UserSettings.getInstance().getUserId()).collection(mTarget).document(imageName);
+
+        Map<String,Object> data = new HashMap<>();
+        data.put("id", imageName);
+        docRef.set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.w("NORMAL", "Added image to list");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("ERROR", "Error writing document", e);
+                    }
+                });
     }
 }
