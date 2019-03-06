@@ -1,11 +1,13 @@
 [{
 		"image": "20150420_active_regions_171.jpg",
 		"title": "The sun",
-		"legend": "Image taken by the NASA's Solar Dynamics Observatory in April 20, 2015. \n This image highlights the active region of the sun"
+		"legend": "Image taken by the NASA's Solar Dynamics Observatory in April 20, 2015. \n This image highlights the active region of the sun",
+		"URL":"https://firebasestorage.googleapis.com/v0/b/space-time-12b72.appspot.com/o/20150420_active_regions_171.jpg?alt=media&token=3387649b-2270-49ee-bff5-26d6bc43cebc"
 	},
 	{
 		"image": "sun_SDO.jpg",
 		"title": "The sun",
-		"legend": "Image of the Moon transiting across the Sun, taken by SDO on Aug. 21, 2017."
+		"legend": "Image of the Moon transiting across the Sun, taken by SDO on Aug. 21, 2017.",
+		"URL":"https://firebasestorage.googleapis.com/v0/b/space-time-12b72.appspot.com/o/sun_SDO.jpg?alt=media&token=c114203f-fdb7-4447-9dd4-b4085a53499b"
 	}
 ]

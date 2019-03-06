@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mobile.hinde.utils.Constant;
 import com.mobile.hinde.utils.Grid_Adapter;
 import com.mobile.hinde.utils.UserSettings;
 
@@ -65,21 +67,25 @@ public class Frag_ImageList extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     Map<String,Object> userMap = document.getData();
 
+                    ScrollView root = getView().findViewById(R.id.scrollLayout);
+
                     // Create LinearLayout
-                    final LinearLayout ll = new LinearLayout(getActivity());
+                    LinearLayout ll = new LinearLayout(getActivity());
                     ll.setOrientation(LinearLayout.VERTICAL);
-                    TextView title = createTextView();
-                    View line = createLine();
 
 
+                    for(String target : Constant.TARGET_LIST){
+                        if(userMap.containsKey(target) && ((ArrayList<String>)userMap.get(target)).size() > 0 ) {
+                            TextView title = createTextView(target);
+                            View line = createLine();
 
-                    RecyclerView rv = createRecycler((ArrayList<String>) userMap.get("MOON"));
+                            RecyclerView rv = createRecycler((ArrayList<String>) userMap.get(target));
 
-                    LinearLayout root = getView().findViewById(R.id.rootLayer);
-
-                    ll.addView(title);
-                    ll.addView(line);
-                    ll.addView(rv);
+                            ll.addView(title);
+                            ll.addView(line);
+                            ll.addView(rv);
+                        }
+                    }
 
                     root.addView(ll);
 
@@ -99,15 +105,16 @@ public class Frag_ImageList extends Fragment {
         super.onDestroy();
     }
 
-    private TextView createTextView(){
+    private TextView createTextView(String target){
         TextView txt = new TextView(getActivity());
 
         Typeface font = ResourcesCompat.getFont(getActivity(), R.font.digitaldream);
         txt.setTypeface(font);
         txt.setTextSize(20);
-        txt.setText("MOON");
+        txt.setText(target);
         txt.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(20, 50, 0, 20);
         txt.setLayoutParams(params);
 
         return txt;
@@ -123,13 +130,15 @@ public class Frag_ImageList extends Fragment {
 
     private RecyclerView createRecycler(ArrayList<String> imgList){
         final RecyclerView rv = new RecyclerView(getActivity());
-        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,RecyclerView.LayoutParams.MATCH_PARENT);
+        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,RecyclerView.LayoutParams.WRAP_CONTENT);
+        params.setMargins(20,20,20,20);
         rv.setLayoutParams(params);
 
         Grid_Adapter customAdapter = new Grid_Adapter(getActivity(), imgList);
         rv.setAdapter(customAdapter); // set the Adapter to RecyclerView
         // set a GridLayoutManager with 3 number of columns , horizontal gravity and false value for reverseLayout to show the items from start to end
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),2, LinearLayoutManager.HORIZONTAL,false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),1, LinearLayoutManager.HORIZONTAL,false);
+        gridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rv.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
         return rv;
     }

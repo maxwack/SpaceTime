@@ -2,7 +2,6 @@
     <string name="app_name">Space Time</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="txt_sun">SUN</string>
     <string name="txt_moon">MOON</string>
     <string name="txt_voy1">VOYAGER 1</string>

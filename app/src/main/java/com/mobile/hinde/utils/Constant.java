@@ -1,7 +1,9 @@
 package com.mobile.hinde.utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Constant {
@@ -30,7 +32,19 @@ public class Constant {
     public static final long VOYAGER1_UNLOCK = 500;
     public static final long INSIGHT_UNLOCK = 200;
 
+    public static final List<String> TARGET_LIST;
+
     public static final Map<Integer, String> NAME_FROM_CODE;
+
+    static {
+        ArrayList<String> list = new ArrayList<>();
+        list.add(SUN_NAME);
+        list.add(MOON_NAME);
+        list.add(VOYAGER1_NAME);
+        list.add(INSIGHT_NAME);
+
+        TARGET_LIST = Collections.unmodifiableList(list);
+    }
 
     static {
         Map<Integer, String> map = new HashMap();

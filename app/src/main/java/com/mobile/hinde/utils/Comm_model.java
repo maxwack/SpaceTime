@@ -48,9 +48,10 @@ public class Comm_model {
         new Duration_Site(new AsyncResponse(){
 
             @Override
-            public void processFinish(JSONObject output){
+            public void processFinish(Object output){
                 try{
-                    long duration = output.getLong(targetName);
+                    JSONObject result = (JSONObject) output;
+                    long duration = result.getLong(targetName);
                     Intent intent = new Intent(c,Broadcast_Service.class);
                     intent.setAction(targetName);
                     intent.putExtra("duration",duration * 2);

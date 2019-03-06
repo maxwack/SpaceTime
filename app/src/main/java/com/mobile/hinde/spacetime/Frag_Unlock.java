@@ -49,6 +49,7 @@ public class Frag_Unlock extends Fragment implements View.OnClickListener  {
         if(UserSettings.getInstance().getMoney() >= Constant.UNLOCK_FROM_NAME.get(mTarget)){
 
             UserSettings.getInstance().setMoney(UserSettings.getInstance().getMoney() - Constant.UNLOCK_FROM_NAME.get(mTarget));
+            ((Act_Communicate)getActivity()).updateText();
 
             FirebaseFirestore dbInstance = FirebaseFirestore.getInstance();
             DocumentReference docRef = dbInstance.collection("users").document(UserSettings.getInstance().getUserId());
@@ -60,9 +61,10 @@ public class Frag_Unlock extends Fragment implements View.OnClickListener  {
                             Bundle bundle = new Bundle();
                             bundle.putString("target", mTarget);
                             acceptSendFrag.setArguments(bundle);
-                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            FragmentTransaction transaction = getParentFragment().getChildFragmentManager().beginTransaction();
                             transaction.addToBackStack(null);
-                            transaction.replace(R.id.frag_VOYAGER1, acceptSendFrag).commit();
+                            int fragID = getResources().getIdentifier("frag_" + mTarget,"id", getActivity().getPackageName());
+                            transaction.replace(fragID, acceptSendFrag, mTarget).commit();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -76,7 +78,7 @@ public class Frag_Unlock extends Fragment implements View.OnClickListener  {
 
     private Map<String, Object> updateDoc(){
         Map<String, Object> data = new HashMap<>();
-        data.put(mTarget, "1");
+        data.put(mTarget + "_unlock", "1");
         data.put("money", UserSettings.getInstance().getMoney());
         return data;
     }

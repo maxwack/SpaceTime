@@ -2,6 +2,7 @@ package com.mobile.hinde.spacetime;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -14,9 +15,13 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mobile.hinde.connection.AsyncResponse;
 import com.mobile.hinde.connection.Image_List;
 import com.mobile.hinde.database.DBHandler;
@@ -96,18 +101,17 @@ public class Frag_Send_Accept extends Fragment implements View.OnClickListener  
                             }
                         });
 
-
-
-
                 new Image_List(new AsyncResponse(){
                     @Override
-                    public void processFinish(JSONObject output) {        // Create a storage reference from our app
+                    public void processFinish(Object output) {        // Create a storage reference from our app
                         try {
-                            addImageToUserList(output.getString("image"));
+                            JSONObject result = (JSONObject)output;
+                            addImageToUserList(result.getString("image"));
                             Intent i = new Intent(context, Act_Image.class);
-                            i.putExtra("name", output.getString("image"));
-                            i.putExtra("title", output.getString("title"));
-                            i.putExtra("legend", output.getString("legend"));
+                            i.putExtra("name", result.getString("image"));
+                            i.putExtra("title", result.getString("title"));
+                            i.putExtra("legend", result.getString("legend"));
+                            i.putExtra("URL", result.getString("URL"));
                             startActivityForResult(i, Constant.CODE_FROM_NAME.get(mTarget));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -141,22 +145,7 @@ public class Frag_Send_Accept extends Fragment implements View.OnClickListener  
 
     public void addImageToUserList(String imageName){
         FirebaseFirestore dbInstance = FirebaseFirestore.getInstance();
-        DocumentReference docRef = dbInstance.collection("users").document(UserSettings.getInstance().getUserId()).collection(mTarget).document(imageName);
-
-        Map<String,Object> data = new HashMap<>();
-        data.put("id", imageName);
-        docRef.set(data, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.w("NORMAL", "Added image to list");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("ERROR", "Error writing document", e);
-                    }
-                });
+        DocumentReference docRef = dbInstance.collection("users").document(UserSettings.getInstance().getUserId());
+        docRef.update(mTarget, FieldValue.arrayUnion(imageName));
     }
 }

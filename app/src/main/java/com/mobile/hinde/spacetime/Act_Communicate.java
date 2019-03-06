@@ -73,4 +73,9 @@ public class Act_Communicate extends AppCompatActivity
     public void onFragmentInteraction(Uri uri){
         //you can leave it empty
     }
+
+    public void updateText(){
+        TextView moneyCount = findViewById(R.id.moneyCount);
+        moneyCount.setText(Tool.formatMoneyCount(UserSettings.getInstance().getMoney()));
+    }
 }

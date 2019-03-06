@@ -1,11 +1,13 @@
 [{
 		"image": "Jupiter-Red_Spot.png",
 		"title": "Jupiter",
-		"legend": "Voyager 1 met Jupiter in January 1979 and took over 19 000 pictures. cc NASA/JPL"
+		"legend": "Voyager 1 met Jupiter in January 1979 and took over 19 000 pictures. cc NASA/JPL",
+		"URL":"https://firebasestorage.googleapis.com/v0/b/space-time-12b72.appspot.com/o/Jupiter-Red_Spot.png?alt=media&token=c9a65ee5-9d39-4936-a7bd-f9339897a147"
 	},
 	{
 		"image": "Saturne-large.png",
 		"title": "Saturn",
-		"legend": "Voyager 1 met Saturn in November 1980. cc NASA/JPL"
+		"legend": "Voyager 1 met Saturn in November 1980. cc NASA/JPL",
+		"URL":"https://firebasestorage.googleapis.com/v0/b/space-time-12b72.appspot.com/o/Saturne-large.png?alt=media&token=cbce79db-12d0-4e36-84b8-7ae7e7c1c1bb"
 	}
 ]

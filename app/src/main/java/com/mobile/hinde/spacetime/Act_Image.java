@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobile.hinde.connection.AsyncResponse;
 import com.mobile.hinde.connection.Image_List;
+import com.mobile.hinde.connection.Image_URL;
+import com.mobile.hinde.utils.Tool;
 import com.mobile.hinde.utils.UserSettings;
 
 import org.json.JSONException;
@@ -43,8 +46,8 @@ public class Act_Image extends AppCompatActivity {
     private String mImageName;
     private String mImageTitle;
     private String mImageLegend;
+    private String mURL;
 
-    private final FirebaseStorage mStorage = FirebaseStorage.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,31 +75,21 @@ public class Act_Image extends AppCompatActivity {
         mImageName = intent.getExtras().getString("name");
         mImageTitle = intent.getExtras().getString("title");
         mImageLegend = intent.getExtras().getString("legend");
+        mURL = intent.getExtras().getString("URL");
 
-
-
-        StorageReference storageRef = mStorage.getReference();
-        StorageReference pathReference = storageRef.child(mImageName);
-
-        final long ONE_MEGABYTE = 1024 * 1024;
-        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        new Image_URL(new AsyncResponse(){
             @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                mImage.setImageBitmap(bmp);
-
-                if(bmp.getWidth() != 0) {
-                    float ratio = (float) mMaxWidth / (float) bmp.getWidth();
-                    int newHeight = (int) (bmp.getHeight() * ratio) + mLegend.getHeight() + mSave.getHeight() + actionBarHeight;
+            public void processFinish(Object output) {        // Create a storage reference from our app
+                mImage.setImageDrawable((Drawable) output);
+                int width = ((Drawable)output).getIntrinsicWidth();
+                int height = ((Drawable)output).getIntrinsicHeight();
+                if(width > 0) {
+                    float ratio = (float) mMaxWidth / (float) width;
+                    int newHeight = (int) (height * ratio) + mLegend.getHeight() + mSave.getHeight() + actionBarHeight;
                     getWindow().setLayout(mMaxWidth, newHeight);
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+        }).execute(mURL);
 
         getSupportActionBar().setTitle(mImageTitle);
         mLegend.setText(mImageLegend);
@@ -112,20 +105,4 @@ public class Act_Image extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void addImageToUserList(String imageName){
-        StorageReference storageRef = mStorage.getReference();
-        storageRef.child(imageName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                FirebaseFirestore dbInstance = FirebaseFirestore.getInstance();
-                DocumentReference docRef = dbInstance.collection("users").document(UserSettings.getInstance().getUserId());
-                docRef.update(mTarget, FieldValue.arrayUnion(uri.toString()));
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-            }
-        });
-
-    }
 }

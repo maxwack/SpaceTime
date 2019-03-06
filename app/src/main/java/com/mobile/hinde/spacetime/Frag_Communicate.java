@@ -94,7 +94,7 @@ public class Frag_Communicate extends Fragment {
                         acceptSendMoonFrag.setArguments(bundleMoon);
                         transaction.replace(R.id.frag_MOON, acceptSendMoonFrag, Constant.MOON_NAME);
 
-                        if(userMap.containsKey(Constant.VOYAGER1_NAME)){
+                        if(userMap.containsKey(Constant.VOYAGER1_NAME + "_unlock")){
                             Frag_Send_Accept acceptSendVoy1Frag = new Frag_Send_Accept();
                             Bundle bundleVoy1 = new Bundle();
                             bundleVoy1.putString("target", Constant.VOYAGER1_NAME);
@@ -108,7 +108,7 @@ public class Frag_Communicate extends Fragment {
                             transaction.replace(R.id.frag_VOYAGER1, unlockVoy1Frag, Constant.VOYAGER1_NAME);
                         }
 
-                        if(userMap.containsKey(Constant.INSIGHT_NAME)){
+                        if(userMap.containsKey(Constant.INSIGHT_NAME + "_unlock")){
                             Frag_Send_Accept acceptSendInsFrag = new Frag_Send_Accept();
                             Bundle bundleIns = new Bundle();
                             bundleIns.putString("target", Constant.INSIGHT_NAME);
