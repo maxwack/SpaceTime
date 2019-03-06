@@ -82,6 +82,13 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_IS_RETURNED, 0);
         db.insert(TABLE_NAME_COM, null, values);
         values = new ContentValues();
+        values.put(COLUMN_NAME, "INSIGHT");
+        values.put(COLUMN_LAST_EXECUTED, "");
+        values.put(COLUMN_EXPECTED_END, 0);
+        values.put(COLUMN_IS_ARRIVED, 0);
+        values.put(COLUMN_IS_RETURNED, 0);
+        db.insert(TABLE_NAME_COM, null, values);
+        values = new ContentValues();
         values.put(COLUMN_PROPERTY, "user_id");
         values.put(COLUMN_VALUE, "");
         db.insert(TABLE_NAME_SET, null, values);
