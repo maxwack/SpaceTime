@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
@@ -41,7 +40,9 @@ public class Act_Image extends AppCompatActivity {
     private TextView mLegend;
     private Button mSave;
 
-    private String mTarget;
+    private String mImageName;
+    private String mImageTitle;
+    private String mImageLegend;
 
     private final FirebaseStorage mStorage = FirebaseStorage.getInstance();
 
@@ -68,44 +69,37 @@ public class Act_Image extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        mTarget = intent.getExtras().getString("target");
-        new Image_List(new AsyncResponse(){
+        mImageName = intent.getExtras().getString("name");
+        mImageTitle = intent.getExtras().getString("title");
+        mImageLegend = intent.getExtras().getString("legend");
+
+
+
+        StorageReference storageRef = mStorage.getReference();
+        StorageReference pathReference = storageRef.child(mImageName);
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
-            public void processFinish(JSONObject output) {        // Create a storage reference from our app
-                try {
-                    StorageReference storageRef = mStorage.getReference();
-                    StorageReference pathReference = storageRef.child(output.getString("image"));
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                mImage.setImageBitmap(bmp);
 
-                    final long ONE_MEGABYTE = 1024 * 1024;
-                    pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            mImage.setImageBitmap(bmp);
-
-                            if(bmp.getWidth() != 0) {
-                                float ratio = (float) mMaxWidth / (float) bmp.getWidth();
-                                int newHeight = (int) (bmp.getHeight() * ratio) + mLegend.getHeight() + mSave.getHeight() + actionBarHeight;
-                                getWindow().setLayout(mMaxWidth, newHeight);
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
-                        }
-                    });
-
-                    addImageToUserList(output.getString("image"));
-                    getSupportActionBar().setTitle(output.getString("title"));
-                    mLegend.setText(output.getString("legend"));
-
-                }catch(JSONException jsone){
-
+                if(bmp.getWidth() != 0) {
+                    float ratio = (float) mMaxWidth / (float) bmp.getWidth();
+                    int newHeight = (int) (bmp.getHeight() * ratio) + mLegend.getHeight() + mSave.getHeight() + actionBarHeight;
+                    getWindow().setLayout(mMaxWidth, newHeight);
                 }
             }
-        }).execute(mTarget);
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
 
+        getSupportActionBar().setTitle(mImageTitle);
+        mLegend.setText(mImageLegend);
         getWindow().setLayout(mMaxWidth, mMaxHeight);
     }
 

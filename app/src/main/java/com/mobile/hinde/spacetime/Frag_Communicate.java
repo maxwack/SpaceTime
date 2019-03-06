@@ -108,6 +108,20 @@ public class Frag_Communicate extends Fragment {
                             transaction.replace(R.id.frag_VOYAGER1, unlockVoy1Frag, Constant.VOYAGER1_NAME);
                         }
 
+                        if(userMap.containsKey(Constant.INSIGHT_NAME)){
+                            Frag_Send_Accept acceptSendInsFrag = new Frag_Send_Accept();
+                            Bundle bundleIns = new Bundle();
+                            bundleIns.putString("target", Constant.INSIGHT_NAME);
+                            acceptSendInsFrag.setArguments(bundleIns);
+                            transaction.replace(R.id.frag_INSIGHT, acceptSendInsFrag, Constant.INSIGHT_NAME);
+                        }else{
+                            Frag_Unlock unlockInsFrag = new Frag_Unlock();
+                            Bundle bundleIns = new Bundle();
+                            bundleIns.putString("target", Constant.INSIGHT_NAME);
+                            unlockInsFrag.setArguments(bundleIns);
+                            transaction.replace(R.id.frag_INSIGHT, unlockInsFrag, Constant.INSIGHT_NAME);
+                        }
+
 //                        transaction.addToBackStack(null);
                         transaction.commit();
                         getChildFragmentManager().executePendingTransactions();

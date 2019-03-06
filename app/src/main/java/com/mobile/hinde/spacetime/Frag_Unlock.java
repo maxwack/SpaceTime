@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +34,9 @@ public class Frag_Unlock extends Fragment implements View.OnClickListener  {
 
         Bundle bundle = getArguments();
         mTarget = bundle.getString("target");
+
+        TextView amountTxt = view.findViewById(R.id.txt_AMOUNT);
+        amountTxt.setText(String.valueOf(Constant.UNLOCK_FROM_NAME.get(mTarget)));
 
         Button unlock_butt = view.findViewById(R.id.but_UNLOCK);
         unlock_butt.setOnClickListener(this);
