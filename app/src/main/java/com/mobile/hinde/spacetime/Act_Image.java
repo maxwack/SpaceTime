@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
@@ -29,6 +31,7 @@ import com.mobile.hinde.utils.UserSettings;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +69,7 @@ public class Act_Image extends AppCompatActivity {
 
         Intent intent = getIntent();
         mTarget = intent.getExtras().getString("target");
-        Image_List asyncTask = (Image_List) new Image_List(new AsyncResponse(){
+        new Image_List(new AsyncResponse(){
             @Override
             public void processFinish(JSONObject output) {        // Create a storage reference from our app
                 try {
@@ -116,23 +119,19 @@ public class Act_Image extends AppCompatActivity {
     }
 
     public void addImageToUserList(String imageName){
-        FirebaseFirestore dbInstance = FirebaseFirestore.getInstance();
-        DocumentReference docRef = dbInstance.collection("users").document(UserSettings.getInstance().getUserId()).collection(mTarget).document(imageName);
+        StorageReference storageRef = mStorage.getReference();
+        storageRef.child(imageName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                FirebaseFirestore dbInstance = FirebaseFirestore.getInstance();
+                DocumentReference docRef = dbInstance.collection("users").document(UserSettings.getInstance().getUserId());
+                docRef.update(mTarget, FieldValue.arrayUnion(uri.toString()));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+            }
+        });
 
-        Map<String,Object> data = new HashMap<>();
-        data.put("id", imageName);
-        docRef.set(data, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.w("NORMAL", "Added image to list");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("ERROR", "Error writing document", e);
-                    }
-                });
     }
 }
