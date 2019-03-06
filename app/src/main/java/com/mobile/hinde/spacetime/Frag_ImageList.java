@@ -14,6 +14,8 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +51,20 @@ public class Frag_ImageList extends Fragment {
 
     private final UserSettings instance = UserSettings.getInstance();
 
+    private int mNumColumn=0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DisplayMetrics dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        mNumColumn =(int) (dm.widthPixels / TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                120,
+                dm
+        ));
+
     }
 
     @Override
@@ -137,8 +150,8 @@ public class Frag_ImageList extends Fragment {
         Grid_Adapter customAdapter = new Grid_Adapter(getActivity(), imgList);
         rv.setAdapter(customAdapter); // set the Adapter to RecyclerView
         // set a GridLayoutManager with 3 number of columns , horizontal gravity and false value for reverseLayout to show the items from start to end
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),1, LinearLayoutManager.HORIZONTAL,false);
-        gridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),mNumColumn, LinearLayoutManager.VERTICAL,false);
         rv.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
         return rv;
     }
