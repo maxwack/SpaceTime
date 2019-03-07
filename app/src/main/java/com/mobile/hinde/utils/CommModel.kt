@@ -33,7 +33,8 @@ class CommModel(private val controller : FragSendAccept, private val targetName:
                 val duration = result.getLong(targetName)
 
                 val intent = Intent(c, BroadcastService::class.java)
-                intent.putExtra("duration", duration)
+                intent.action = targetName
+                intent.putExtra("duration", duration * 2)
                 c?.startService(intent)
 
                 val butSend = v?.findViewById<Button>(R.id.but_Send)
@@ -70,11 +71,11 @@ class CommModel(private val controller : FragSendAccept, private val targetName:
                 intent.action = targetName
                 intent.putExtra("duration", duration)
                 c?.startService(intent)
+            } else {
+                val intent = Intent(BroadcastService.COUNTDOWN_FINISH)
+                intent.putExtra("target", targetName)
+                c?.sendBroadcast(intent)
             }
-        } else{
-            val intent = Intent(BroadcastService.COUNTDOWN_FINISH)
-            intent.putExtra("target", targetName)
-            c?.sendBroadcast(intent)
         }
     }
 

@@ -9,7 +9,7 @@ import java.util.HashMap
 
 class DBHandler(val context: Context):SQLiteOpenHelper(context, DATABASE_NAME,null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 1;
+        private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "SpaceTime.db"
         private const val TABLE_NAME_COM = "Menu_Com"
         private const val TABLE_NAME_SET = "App_Settings"

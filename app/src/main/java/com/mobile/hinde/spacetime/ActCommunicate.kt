@@ -3,6 +3,7 @@ package com.mobile.hinde.spacetime
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import com.mobile.hinde.utils.Tools
@@ -31,7 +32,7 @@ class ActCommunicate : AppCompatActivity(), FragCommunicate.OnFragmentInteractio
         moneyCount.text = Tools.formatMoneyCount(UserSettings.money)
     }
 
-    fun showListImage() {
+    fun showListImage(v: View) {
 
         if (mDisplay) {
             mDisplay = false

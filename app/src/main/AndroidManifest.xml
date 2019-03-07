@@ -18,12 +18,18 @@
              </intent-filter>
          </activity>
 
-        <activity android:name=".ActCommunicate" >
-        </activity>
+        <activity android:name=".ActCommunicate" />
 
          <activity android:name=".ActImage"
              android:theme="@style/PopUpTheme">
          </activity>
+
+         <service android:enabled="true" android:name="com.mobile.hinde.service.BroadcastService">
+             <intent-filter>
+                 <action android:name="tick" />
+                 <action android:name="finish" />
+             </intent-filter>
+         </service>
 
      </application>
 </manifest>

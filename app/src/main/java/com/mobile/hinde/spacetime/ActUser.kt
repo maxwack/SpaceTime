@@ -3,6 +3,7 @@ package com.mobile.hinde.spacetime
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.EditText
 
 import com.google.firebase.firestore.FirebaseFirestore
@@ -34,7 +35,7 @@ class ActUser : AppCompatActivity() {
         }
     }
 
-    fun registerUser() {
+    fun registerUser(v: View) {
         val inputField = findViewById<EditText>(R.id.inputField)
         if ("" == inputField.text.toString()) {
             return
