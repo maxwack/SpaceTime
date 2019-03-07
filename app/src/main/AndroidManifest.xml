@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/MainTheme" >
 
-         <activity android:name=".Act_user" >
+         <activity android:name=".ActUser" >
              <intent-filter>
                  <action android:name="android.intent.action.MAIN" />
 
@@ -18,19 +18,12 @@
              </intent-filter>
          </activity>
 
-        <activity android:name=".Act_Communicate" >
+        <activity android:name=".ActCommunicate" >
         </activity>
 
-         <activity android:name=".Act_Image"
+         <activity android:name=".ActImage"
              android:theme="@style/PopUpTheme">
          </activity>
 
-        <service android:name="com.mobile.hinde.alarm.Broadcast_Service" >
-            <intent-filter>
-                <action android:name="tick" />
-                <action android:name="finish" />
-            </intent-filter>
-        </service>
-
-    </application>
+     </application>
 </manifest>
