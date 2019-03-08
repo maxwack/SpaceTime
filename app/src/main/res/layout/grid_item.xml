@@ -10,6 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"
-        android:contentDescription="image Item"
+        android:contentDescription="@string/desc_image"
         android:scaleType="fitXY" />
 </RelativeLayout>

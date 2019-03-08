@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.mobile.hinde.connection.AsyncResponse
 import com.mobile.hinde.connection.ImageURL
+import com.mobile.hinde.utils.Tools
 
 class ActImage : AppCompatActivity() {
 
@@ -52,13 +53,17 @@ class ActImage : AppCompatActivity() {
         ImageURL(object : AsyncResponse {
             override fun processFinish(output: Any) {
                 // Create a storage reference from our app
-                mImage!!.setImageDrawable(output as Drawable)
-                val width = output.intrinsicWidth
-                val height = output.intrinsicHeight
-                if (width > 0) {
-                    val ratio = mMaxWidth.toFloat() / width.toFloat()
-                    val newHeight = (height * ratio).toInt() + mLegend!!.height + mSave!!.height + actionBarHeight
-                    window.setLayout(mMaxWidth, newHeight)
+                if(output == null){
+                    Tools.displayError(this@ActImage , resources.getString(R.string.error_title), resources.getString(R.string.error_image_not_found))
+                }else {
+                    mImage!!.setImageDrawable(output as Drawable)
+                    val width = output.intrinsicWidth
+                    val height = output.intrinsicHeight
+                    if (width > 0) {
+                        val ratio = mMaxWidth.toFloat() / width.toFloat()
+                        val newHeight = (height * ratio).toInt() + mLegend!!.height + mSave!!.height + actionBarHeight
+                        window.setLayout(mMaxWidth, newHeight)
+                    }
                 }
             }
         }).execute(mURL)

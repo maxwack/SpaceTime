@@ -15,7 +15,7 @@ import com.mobile.hinde.spacetime.R
 import com.mobile.hinde.view.DynamicSineWaveView
 import org.json.JSONObject
 
-class CommModel(private val controller : FragSendAccept, private val targetName: String) {
+class CommModel(controller : FragSendAccept, private val targetName: String) {
 
     var v: View?=null
     private var c: Context? = null
@@ -30,23 +30,26 @@ class CommModel(private val controller : FragSendAccept, private val targetName:
         DurationSite(object : AsyncResponse {
             override fun processFinish(output: Any) {
                 val result = output as JSONObject
-                val duration = result.getLong(targetName)
+                if(result.has("error")){
+                    Tools.displayError(c!!, c!!.resources.getString(R.string.error_title),  c!!.resources.getString(R.string.error_file_not_found))
+                }else{
+                    val duration = result.getLong(targetName)
+                    val intent = Intent(c, BroadcastService::class.java)
+                    intent.action = targetName
+                    intent.putExtra("duration", duration * 2)
+                    c?.startService(intent)
 
-                val intent = Intent(c, BroadcastService::class.java)
-                intent.action = targetName
-                intent.putExtra("duration", duration * 2)
-                c?.startService(intent)
+                    val butSend = v?.findViewById<Button>(R.id.but_Send)
+                    butSend?.visibility = View.INVISIBLE
 
-                val butSend = v?.findViewById<Button>(R.id.but_Send)
-                butSend?.visibility = View.INVISIBLE
+                    val waveView = v?.findViewById<DynamicSineWaveView>(R.id.SineWave)
+                    waveView?.visibility = View.VISIBLE
+                    waveView?.startAnimation()
 
-                val waveViewkot = v?.findViewById<DynamicSineWaveView>(R.id.SineWave)
-                waveViewkot?.visibility = View.VISIBLE
-                waveViewkot?.startAnimation()
-
-                val txtView = v?.findViewById<TextView>(R.id.Timer)
-                txtView?.visibility = View.VISIBLE
-                dbHandler?.updateData(targetName, System.currentTimeMillis(), System.currentTimeMillis() + 2 * duration)
+                    val txtView = v?.findViewById<TextView>(R.id.Timer)
+                    txtView?.visibility = View.VISIBLE
+                    dbHandler?.updateData(targetName, System.currentTimeMillis(), System.currentTimeMillis() + 2 * duration)
+                }
             }
         }).execute(targetName)
     }

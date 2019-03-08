@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="right|center_vertical"
+            android:gravity="end|center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -27,7 +27,6 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/digitaldreamfat"
                 android:gravity="center_vertical"
-                android:text="TextView"
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
 
@@ -35,10 +34,10 @@
                 android:id="@+id/moneyCount"
                 android:layout_width="65dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:fontFamily="@font/digitaldream"
-                android:gravity="right|center_vertical"
-                android:text="0000"
+                android:gravity="end|center_vertical"
+                android:text="@string/default_money"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:visibility="visible" />
@@ -48,7 +47,7 @@
                 android:layout_width="183dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="money"
+                android:contentDescription="@string/desc_coin"
                 app:srcCompat="@drawable/coin" />
 
             <ImageButton
@@ -57,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/black"
                 android:onClick="showListImage"
+                android:contentDescription="@string/desc_image_list"
                 app:srcCompat="@android:drawable/ic_dialog_dialer" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>

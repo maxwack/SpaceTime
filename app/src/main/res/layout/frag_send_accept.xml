@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="120dp"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
 
         <Button
             android:id="@+id/but_Send"
@@ -13,7 +14,7 @@
             android:background="@drawable/but_border"
             android:fontFamily="@font/digitaldream"
             android:gravity="center"
-            android:text="SEND"
+            android:text="@string/but_send"
             android:textColor="@color/colorPrimary" />
 
         <Button
@@ -26,7 +27,7 @@
             android:background="@drawable/but_border"
             android:fontFamily="@font/digitaldream"
             android:gravity="center"
-            android:text="ACCEPT"
+            android:text="@string/but_accept"
             android:textColor="@color/colorPrimary"
             android:visibility="invisible" />
 

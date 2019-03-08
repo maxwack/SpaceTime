@@ -1,9 +1,27 @@
 <resources>
     <string name="app_name">Space Messenger</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="default_money">0000</string>
+
+    <string name="desc_coin">Image of currency</string>
+    <string name="desc_image_list">Button to access the list of already received image</string>
+    <string name="desc_image">Image received from the space target</string>
+
+    <string name="txt_operator">Choose an operator name:</string>
     <string name="txt_sun">SUN</string>
     <string name="txt_moon">MOON</string>
     <string name="txt_voy1">VOYAGER 1</string>
     <string name="txt_insight">INSIGHT</string>
+
+    <string name="but_save">SAVE</string>
+    <string name="but_start">START OPERATIONS</string>
+    <string name="but_send">SEND</string>
+    <string name="but_accept">ACCEPT</string>
+    <string name="but_unlock">UNLOCK</string>
+
+
+    <string name="error_title">An error occurred.</string>
+    <string name="error_file_not_found">The message was lost in the immensity of space. Please try again later.</string>
+    <string name="error_image_not_found">The image was lost on its way back to you. Please try again later.</string>
+    <string name="error_user_exist">An operator with the same name already exists. Please choose another operator name.</string>
 </resources>

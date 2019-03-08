@@ -7,10 +7,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/MainTheme" >
+        android:supportsRtl="true">
 
-         <activity android:name=".ActUser" >
+         <activity android:name=".ActUser"
+             android:theme="@style/MainTheme" >
+
              <intent-filter>
                  <action android:name="android.intent.action.MAIN" />
 
@@ -18,13 +19,15 @@
              </intent-filter>
          </activity>
 
-        <activity android:name=".ActCommunicate" />
+        <activity android:name=".ActCommunicate"
+            android:theme="@style/MainTheme" />
 
          <activity android:name=".ActImage"
              android:theme="@style/PopUpTheme">
          </activity>
 
-         <service android:enabled="true" android:name="com.mobile.hinde.service.BroadcastService">
+         <service android:name="com.mobile.hinde.service.BroadcastService"
+             android:exported="false">
              <intent-filter>
                  <action android:name="tick" />
                  <action android:name="finish" />

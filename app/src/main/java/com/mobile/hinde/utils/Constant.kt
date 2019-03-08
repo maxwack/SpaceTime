@@ -2,12 +2,12 @@ package com.mobile.hinde.utils
 
 class Constant {
     companion object {
-        const val SUN_CODE = 1
-        const val MOON_CODE = 2
-        const val ISS_CODE = 3
-        const val INSIGHT_CODE = 4
-        const val VOYAGER1_CODE = 5
-        const val VOYAGER2_CODE = 6
+        private const val SUN_CODE = 1
+        private const val MOON_CODE = 2
+        private const val ISS_CODE = 3
+        private const val INSIGHT_CODE = 4
+        private const val VOYAGER1_CODE = 5
+        private const val VOYAGER2_CODE = 6
 
         const val SUN_NAME = "SUN"
         const val MOON_NAME = "MOON"
@@ -16,13 +16,13 @@ class Constant {
         const val VOYAGER1_NAME = "VOYAGER1"
         const val VOYAGER2_NAME = "VOYAGER2"
 
-        const val SUN_MONEY = 30
-        const val MOON_MONEY = 10
-        const val VOYAGER1_MONEY = 100
-        const val INSIGHT_MONEY = 50
+        private const val SUN_MONEY = 30
+        private const val MOON_MONEY = 10
+        private const val VOYAGER1_MONEY = 100
+        private const val INSIGHT_MONEY = 50
 
-        const val VOYAGER1_UNLOCK = 500
-        const val INSIGHT_UNLOCK = 200
+        private const val VOYAGER1_UNLOCK = 500
+        private const val INSIGHT_UNLOCK = 200
 
         val TARGET_LIST = listOf(SUN_NAME, MOON_NAME, VOYAGER1_NAME, INSIGHT_NAME)
         val NAME_FROM_CODE = hashMapOf(SUN_CODE to SUN_NAME, MOON_CODE to MOON_NAME,

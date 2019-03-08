@@ -34,7 +34,7 @@ class GridAdapter(private val context: Context, private val imgName: List<String
                 val document = task.result
                 ImageURL(object : AsyncResponse {
                     override fun processFinish(output: Any) {
-                        holder.image.setImageDrawable(output!! as Drawable)
+                        holder.image.setImageDrawable(output as Drawable)
                     }
                 }).execute(document!!["URL"] as String)
 

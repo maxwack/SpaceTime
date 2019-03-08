@@ -4,7 +4,8 @@
     android:layout_width="120dp"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
 
     <Button
         android:id="@+id/but_UNLOCK"
@@ -13,7 +14,7 @@
         android:background="@drawable/but_border"
         android:fontFamily="@font/digitaldream"
         android:gravity="center"
-        android:text="UNLOCK"
+        android:text="@string/but_unlock"
         android:textColor="@color/colorPrimary"/>
 
     <RelativeLayout
@@ -24,7 +25,7 @@
             android:id="@+id/txt_AMOUNT"
             android:layout_width="73dp"
             android:layout_height="wrap_content"
-            android:gravity="center|right|center_horizontal"
+            android:gravity="end|center_horizontal"
             android:textColor="@color/colorPrimary" />
 
         <ImageView
@@ -33,7 +34,7 @@
             android:layout_height="19dp"
             android:layout_alignEnd="@+id/txt_AMOUNT"
             android:layout_marginEnd="-12dp"
-            android:layout_weight="1"
+            android:contentDescription="@string/desc_coin"
             app:srcCompat="@drawable/coin" />
     </RelativeLayout>
 

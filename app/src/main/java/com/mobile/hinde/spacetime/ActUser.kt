@@ -8,6 +8,7 @@ import android.widget.EditText
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mobile.hinde.database.DBHandler
+import com.mobile.hinde.utils.Tools
 import com.mobile.hinde.utils.UserSettings
 
 import java.util.HashMap
@@ -23,14 +24,14 @@ class ActUser : AppCompatActivity() {
 
         mDBHandler = DBHandler(this)
 
-        val id_setting = mDBHandler!!.getUserId()
+        val idSetting = mDBHandler!!.getUserId()
 
         mFFirestore = FirebaseFirestore.getInstance()
 
-        if (id_setting != null && "" != id_setting.value) {
-            UserSettings.userId = id_setting.value
+        if (idSetting != null && "" != idSetting.value) {
+            UserSettings.userId = idSetting.value
             val i = Intent(this, ActCommunicate::class.java)
-            i.action = id_setting.value
+            i.action = idSetting.value
             startActivity(i)
         }
     }
@@ -44,8 +45,7 @@ class ActUser : AppCompatActivity() {
         val docRef = mFFirestore!!.collection("users").document(inputField.text.toString())
         docRef.get().addOnCompleteListener { task ->
             if (task.result!!.exists()) {
-                //value exists in Database
-                //Display error
+                Tools.displayError(this, resources.getString(R.string.error_title), resources.getString(R.string.error_user_exist))
             } else {
                 UserSettings.userId = inputField.text.toString()
                 UserSettings.money = 0

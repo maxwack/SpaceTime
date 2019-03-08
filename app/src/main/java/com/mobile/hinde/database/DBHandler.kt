@@ -32,10 +32,10 @@ class DBHandler(val context: Context):SQLiteOpenHelper(context, DATABASE_NAME,nu
                 + "$COLUMN_IS_ARRIVED INTEGER, $COLUMN_IS_RETURNED INTEGER )")
         val createTableSet = ("CREATE TABLE $TABLE_NAME_SET ($COLUMN_PROPERTY TEXT PRIMARY KEY,"
                 + "$COLUMN_VALUE TEXT)")
-        db!!.execSQL(createTableCom)
-        db!!.execSQL(createTableSet)
+        db?.execSQL(createTableCom)
+        db?.execSQL(createTableSet)
 
-        initDB(db)
+        initDB(db!!)
 
     }
 
