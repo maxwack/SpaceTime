@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.mobile.hinde.utils.Constant
+import com.mobile.hinde.utils.Tools
 import com.mobile.hinde.utils.UserSettings
 
 import java.util.HashMap
@@ -58,6 +59,8 @@ class FragUnlock : Fragment(), View.OnClickListener {
                         transaction.replace(fragID, acceptSendFrag, mTarget).commit()
                     }
                     .addOnFailureListener { e -> Log.w("ERROR", "Error writing document", e) }
+        }else {
+            Tools.displayShopMessage(context!!, "Not enough Zions", "You don't have enough Zions.")
         }
     }
 

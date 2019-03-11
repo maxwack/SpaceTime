@@ -1,17 +1,31 @@
 package com.mobile.hinde.spacetime
 
+import android.Manifest
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.mobile.hinde.connection.AsyncResponse
 import com.mobile.hinde.connection.ImageURL
 import com.mobile.hinde.utils.Tools
+import java.io.File
+import java.io.FileOutputStream
+import android.support.v4.app.ActivityCompat
+import android.content.pm.PackageManager
+import android.support.v4.content.ContextCompat.checkSelfPermission
+import java.io.FileWriter
 
-class ActImage : AppCompatActivity() {
+
+class ActImage : AppCompatActivity(), View.OnClickListener  {
 
     private var mImage: ImageView? = null
     private var mLegend: TextView? = null
@@ -39,6 +53,8 @@ class ActImage : AppCompatActivity() {
         val actionBarHeight = styledAttributes.getDimension(0, 0f).toInt()
         styledAttributes.recycle()
 
+        window.setLayout(mMaxWidth, mMaxHeight)
+
         mLegend = findViewById(R.id.text_legend)
         mSave = findViewById(R.id.save)
         mImage = findViewById(R.id.image)
@@ -50,27 +66,55 @@ class ActImage : AppCompatActivity() {
         mImageLegend = intent.extras!!.getString("legend")
         mURL = intent.extras!!.getString("URL")
 
-        ImageURL(object : AsyncResponse {
-            override fun processFinish(output: Any) {
-                // Create a storage reference from our app
-                if(output == null){
-                    Tools.displayError(this@ActImage , resources.getString(R.string.error_title), resources.getString(R.string.error_image_not_found))
-                }else {
-                    mImage!!.setImageDrawable(output as Drawable)
-                    val width = output.intrinsicWidth
-                    val height = output.intrinsicHeight
-                    if (width > 0) {
-                        val ratio = mMaxWidth.toFloat() / width.toFloat()
-                        val newHeight = (height * ratio).toInt() + mLegend!!.height + mSave!!.height + actionBarHeight
-                        window.setLayout(mMaxWidth, newHeight)
-                    }
-                }
-            }
-        }).execute(mURL)
 
         supportActionBar!!.title = mImageTitle
         mLegend!!.text = mImageLegend
-        window.setLayout(mMaxWidth, mMaxHeight)
+        mLegend!!.measure(0,0)
+
+        mSave!!.measure(0,0)
+
+        if(fileList().contains(mImageName)){
+            val bmpImage = BitmapFactory.decodeStream(openFileInput(mImageName))
+            mImage!!.setImageBitmap(bmpImage)
+            val width = bmpImage.width
+            val height = bmpImage.height
+            if (width > 0) {
+                val ratio = mMaxWidth.toFloat() / width.toFloat()
+                val newHeight = (height * ratio).toInt() + mLegend!!.measuredHeight + mSave!!.measuredHeight + actionBarHeight
+                window.setLayout(mMaxWidth, newHeight)
+            }
+        }else{
+            ImageURL(object : AsyncResponse {
+                override fun processFinish(output: Any) {
+                    // Create a storage reference from our app
+                    if(output == null){
+                        Tools.displayError(this@ActImage , resources.getString(R.string.error_title), resources.getString(R.string.error_image_not_found))
+                    }else {
+                        mImage!!.setImageDrawable(output as Drawable)
+                        val width = output.intrinsicWidth
+                        val height = output.intrinsicHeight
+                        if (width > 0) {
+                            val ratio = mMaxWidth.toFloat() / width.toFloat()
+                            val newHeight = (height * ratio).toInt() + mLegend!!.height + mSave!!.height + actionBarHeight
+                            window.setLayout(mMaxWidth, newHeight)
+                        }
+                    }
+                }
+            }).execute(mImageName, mURL)
+        }
+
+        val saveBut = findViewById<Button>(R.id.save)
+        saveBut.setOnClickListener(this@ActImage)
+    }
+
+    override fun onClick(v: View) {
+        if(Tools.isExternalStorageWritable()) {
+            val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), mImageName)
+            FileOutputStream(file).use {
+                (mImage?.drawable as BitmapDrawable).bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                Toast.makeText(this@ActImage, "Image saved", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 }
