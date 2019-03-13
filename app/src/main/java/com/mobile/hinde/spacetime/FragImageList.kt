@@ -18,7 +18,7 @@ import android.widget.TextView
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mobile.hinde.utils.Constant
-import com.mobile.hinde.utils.GridAdapter
+import com.mobile.hinde.view.GridAdapter
 import com.mobile.hinde.utils.UserSettings
 
 import java.util.ArrayList

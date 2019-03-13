@@ -28,6 +28,10 @@
              android:theme="@style/PopUpTheme">
          </activity>
 
+         <activity android:name=".ActShop"
+             android:theme="@style/ShopTheme">
+         </activity>
+
          <service android:name="com.mobile.hinde.service.BroadcastService"
              android:exported="false">
              <intent-filter>

@@ -1,15 +1,17 @@
 package com.mobile.hinde.spacetime
 
+import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import com.mobile.hinde.utils.Tools
 import com.mobile.hinde.utils.UserSettings
 
-class ActCommunicate : AppCompatActivity(), FragCommunicate.OnFragmentInteractionListener, FragLaunch.OnFragmentInteractionListener {
+class ActCommunicate : AppCompatActivity(), FragCommunicate.OnFragmentInteractionListener, FragLaunch.OnFragmentInteractionListener, View.OnClickListener  {
 
     private var mDisplay = false
 
@@ -21,6 +23,9 @@ class ActCommunicate : AppCompatActivity(), FragCommunicate.OnFragmentInteractio
         val mainFrag = FragMain()
         transaction.replace(R.id.root_frag, mainFrag)
         transaction.commit()
+
+        val shopBut = findViewById<Button>(R.id.shop)
+        shopBut.setOnClickListener(this@ActCommunicate)
 
         val userTxt = findViewById<TextView>(R.id.userIdTxt)
         userTxt.text = intent.action
@@ -54,6 +59,11 @@ class ActCommunicate : AppCompatActivity(), FragCommunicate.OnFragmentInteractio
             transaction.commit()
         }
 
+    }
+
+    override fun onClick(v:View){
+        val i= Intent(this@ActCommunicate,ActShop::class.java)
+        startActivity(i)
     }
 
     override fun onFragmentInteraction(uri: Uri) {

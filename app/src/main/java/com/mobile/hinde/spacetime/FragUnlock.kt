@@ -1,8 +1,10 @@
 package com.mobile.hinde.spacetime
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,10 @@ import com.mobile.hinde.utils.Tools
 import com.mobile.hinde.utils.UserSettings
 
 import java.util.HashMap
+import android.content.DialogInterface
+import android.content.DialogInterface.OnShowListener
+
+
 
 class FragUnlock : Fragment(), View.OnClickListener {
 
@@ -40,9 +46,25 @@ class FragUnlock : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
 
-        if (UserSettings.money >= Constant.UNLOCK_FROM_NAME[mTarget]!!) {
+        // Initialize a new instance of
+        val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AlertDialogCustom))
 
-            UserSettings.money = UserSettings.money - Constant.UNLOCK_FROM_NAME[mTarget]!!
+        // Set the alert dialog title
+        builder.setTitle("Unlock path to ${mTarget!!.capitalize()}")
+
+        // Display a message on alert dialog
+        builder.setMessage("How do you want to unlock it ? ")
+
+        // Set a positive button and its click listener on alert dialog
+        builder.setNegativeButton("BUY \n 5$"){_,_ ->
+            //TODO start shop activity + unlock
+        }
+
+        builder.setIcon(context?.getDrawable(R.drawable.coin))
+
+        // Set a positive button and its click listener on alert dialog
+        builder.setPositiveButton("COINS \n ${Constant.UNLOCK_FROM_NAME[mTarget!!]!!}"){_,_ ->
+            UserSettings.money = UserSettings.money - Constant.UNLOCK_FROM_NAME[mTarget!!]!!
             (activity as ActCommunicate).updateText()
 
             val dbInstance = FirebaseFirestore.getInstance()
@@ -59,9 +81,17 @@ class FragUnlock : Fragment(), View.OnClickListener {
                         transaction.replace(fragID, acceptSendFrag, mTarget).commit()
                     }
                     .addOnFailureListener { e -> Log.w("ERROR", "Error writing document", e) }
-        }else {
-            Tools.displayShopMessage(context!!, "Not enough Zions", "You don't have enough Zions.")
         }
+
+        // Finally, make the alert dialog using builder
+        val dialog: AlertDialog = builder.create()
+        dialog.window!!.setBackgroundDrawableResource(R.drawable.but_border)
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = UserSettings.money > Constant.UNLOCK_FROM_NAME[mTarget!!]!!
+        }
+        // Display the alert dialog on app interface
+        dialog.show()
     }
 
     private fun updateDoc(): Map<String, Any> {

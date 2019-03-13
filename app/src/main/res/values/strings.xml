@@ -18,6 +18,13 @@
     <string name="but_send">SEND</string>
     <string name="but_accept">ACCEPT</string>
     <string name="but_unlock">UNLOCK</string>
+    <string name="but_shop">SHOP</string>
+    <string name="but_buy">BUY</string>
+
+    <string name="amount_200">200 Zyons</string>
+    <string name="amount_500">500 Zyons</string>
+    <string name="amount_1000">1.000 Zyons</string>
+    <string name="amount_10000">10.000 Zyons</string>
 
 
     <string name="error_title">An error occurred.</string>

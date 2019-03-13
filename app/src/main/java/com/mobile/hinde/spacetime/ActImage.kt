@@ -1,6 +1,5 @@
 package com.mobile.hinde.spacetime
 
-import android.Manifest
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -19,10 +18,6 @@ import com.mobile.hinde.connection.ImageURL
 import com.mobile.hinde.utils.Tools
 import java.io.File
 import java.io.FileOutputStream
-import android.support.v4.app.ActivityCompat
-import android.content.pm.PackageManager
-import android.support.v4.content.ContextCompat.checkSelfPermission
-import java.io.FileWriter
 
 
 class ActImage : AppCompatActivity(), View.OnClickListener  {

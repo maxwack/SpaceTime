@@ -1,4 +1,4 @@
-package com.mobile.hinde.utils
+package com.mobile.hinde.view
 
 import android.content.Context
 import android.content.Intent

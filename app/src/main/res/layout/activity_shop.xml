@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shop_root_layer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/appToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/black"
+        android:elevation="4dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            <TextView
+                android:id="@+id/userIdTxt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/digitaldreamfat"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:text="@string/but_shop"
+                android:textSize="24sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                app:cardBackgroundColor="@android:color/transparent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/image200"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/desc_coin"
+                        app:srcCompat="@drawable/coin" />
+
+                    <TextView
+                        android:id="@+id/zyons_200"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
+                        android:fontFamily="@font/digitaldream"
+                        android:gravity="center_vertical"
+                        android:text="@string/amount_200"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/but_buy_200"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/but_border"
+                        android:fontFamily="@font/digitaldreamfat"
+                        android:gravity="center|center_vertical"
+                        android:text="@string/but_buy"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                app:cardBackgroundColor="@android:color/transparent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/image500"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/desc_coin"
+                        app:srcCompat="@drawable/coin" />
+
+                    <TextView
+                        android:id="@+id/zyons_500"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
+                        android:fontFamily="@font/digitaldream"
+                        android:gravity="center_vertical"
+                        android:text="@string/amount_500"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/but_buy_500"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/but_border"
+                        android:fontFamily="@font/digitaldreamfat"
+                        android:gravity="center|center_vertical"
+                        android:text="@string/but_buy"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                app:cardBackgroundColor="@android:color/transparent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/image1000"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/desc_coin"
+                        app:srcCompat="@drawable/coin" />
+
+                    <TextView
+                        android:id="@+id/zyons_1000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
+                        android:fontFamily="@font/digitaldream"
+                        android:gravity="center_vertical"
+                        android:text="@string/amount_1000"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/but_buy_1000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/but_border"
+                        android:fontFamily="@font/digitaldreamfat"
+                        android:gravity="center|center_vertical"
+                        android:text="@string/but_buy"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                app:cardBackgroundColor="@android:color/transparent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/image10000"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/desc_coin"
+                        app:srcCompat="@drawable/coin" />
+
+                    <TextView
+                        android:id="@+id/zyons_10000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
+                        android:fontFamily="@font/digitaldream"
+                        android:gravity="center_vertical"
+                        android:text="@string/amount_10000"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/but_buy_10000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/but_border"
+                        android:fontFamily="@font/digitaldreamfat"
+                        android:gravity="center|center_vertical"
+                        android:text="@string/but_buy"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
