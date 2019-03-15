@@ -1,0 +1,66 @@
+<resources>
+    <style name="MainTheme" parent="MainTheme.Base">
+
+    </style>
+
+    <style name="MainTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+
+    <style name="ShopTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="PopUpTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:actionBarStyle">@style/ImageTitleBar</item>
+        <item name="actionBarStyle">@style/ImageTitleBar</item>
+    </style>
+
+    <style name="ImageTitleBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="background">@drawable/img_title_bar</item>
+        <item name="titleTextStyle">@style/TitleTextBar</item>
+    </style>
+
+    <style name="TitleTextBar" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:fontFamily">@font/digitaldreamfat</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <!-- ActionBar tabs text styles -->
+    <style name="AppTheme.WithoutActionBar" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="android:fontFamily">@font/digitaldreamfat</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+        <item name="actionMenuTextColor">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+    </style>
+
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="@android:style/Theme.Material.Dialog">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:headerDividersEnabled">true</item>
+        <item name="android:background">@android:color/black</item>
+    </style>
+</resources>

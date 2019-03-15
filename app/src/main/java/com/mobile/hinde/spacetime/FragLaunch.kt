@@ -1,8 +1,6 @@
 package com.mobile.hinde.spacetime
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,20 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.JsonArray
 import com.mobile.hinde.connection.AsyncResponse
 import com.mobile.hinde.connection.LaunchList
 import com.mobile.hinde.database.DBHandler
-import com.mobile.hinde.service.BroadcastService
-import com.mobile.hinde.utils.Constant
-import com.mobile.hinde.utils.UserSettings
 import org.json.JSONArray
-import org.json.JSONObject
-import java.io.ByteArrayOutputStream
-import java.nio.charset.Charset
-
 
 /**
  * A simple [Fragment] subclass.

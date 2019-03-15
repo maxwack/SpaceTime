@@ -15,7 +15,7 @@
         android:fontFamily="@font/digitaldream"
         android:gravity="center"
         android:text="@string/but_unlock"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/colorPrimary" />
 
     <RelativeLayout
         android:layout_width="match_parent"

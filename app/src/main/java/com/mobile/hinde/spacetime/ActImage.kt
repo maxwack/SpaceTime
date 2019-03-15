@@ -83,7 +83,7 @@ class ActImage : AppCompatActivity(){
                         }
                     }
                 }
-            }).execute(mImageName, mURL)
+            }).execute(mURL)
         }
 
     }

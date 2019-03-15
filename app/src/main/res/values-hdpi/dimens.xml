@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- in values-mdpi/dimens.xml -->
+    <dimen name="textSizeLong">12sp</dimen>
+    <dimen name="textSize">16sp</dimen>
+    <dimen name="cardViewSize">90dp</dimen>
+    <dimen name="tabHeight">50dp</dimen>
+</resources>

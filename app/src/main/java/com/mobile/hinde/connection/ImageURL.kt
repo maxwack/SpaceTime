@@ -5,7 +5,7 @@ import android.os.AsyncTask
 import java.io.InputStream
 import java.net.URL
 
-class ImageURL(private val delegage: AsyncResponse): AsyncTask<String, Any, Any>(){
+class ImageURL(private val delegate: AsyncResponse): AsyncTask<String, Any, Any>(){
 
     override fun doInBackground(vararg params: String?): Drawable? {
         val stream = URL(params[0]).content
@@ -16,7 +16,7 @@ class ImageURL(private val delegage: AsyncResponse): AsyncTask<String, Any, Any>
     }
 
     override fun onPostExecute(result: Any) {
-        delegage.processFinish(result)
+        delegate.processFinish(result)
     }
 
 }

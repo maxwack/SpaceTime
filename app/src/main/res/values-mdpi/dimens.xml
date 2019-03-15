@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- in values-mdpi/dimens.xml -->
+    <dimen name="textSizeLong">14sp</dimen>
+    <dimen name="textSize">16sp</dimen>
+    <dimen name="cardViewSize">60dp</dimen>
+    <dimen name="fragWidth">60dp</dimen>
+</resources>
