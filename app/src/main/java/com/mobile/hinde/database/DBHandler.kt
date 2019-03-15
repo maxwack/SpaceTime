@@ -9,7 +9,7 @@ import java.util.HashMap
 
 class DBHandler(val context: Context):SQLiteOpenHelper(context, DATABASE_NAME,null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val DATABASE_NAME = "SpaceTime.db"
         private const val TABLE_NAME_COM = "Menu_Com"
         private const val TABLE_NAME_SET = "App_Settings"
@@ -87,6 +87,10 @@ class DBHandler(val context: Context):SQLiteOpenHelper(context, DATABASE_NAME,nu
         values.put(COLUMN_PROPERTY, "user_id")
         values.put(COLUMN_VALUE, "")
         db.insert(TABLE_NAME_SET, null, values)
+        values = ContentValues()
+        values.put(COLUMN_PROPERTY, "launch_version")
+        values.put(COLUMN_VALUE, "")
+        db.insert(TABLE_NAME_SET, null, values)
     }
 
     fun getUserId(): AppSettings? {
@@ -109,6 +113,39 @@ class DBHandler(val context: Context):SQLiteOpenHelper(context, DATABASE_NAME,nu
 
         db.close()
         return setting
+    }
+
+    fun getLaunchVersion(): AppSettings? {
+        val db = this.readableDatabase
+
+        val selection = "$COLUMN_PROPERTY = ?"
+        val selectionArgs = arrayOf("launch_version")
+        val cursor = db.query(
+                TABLE_NAME_SET,
+                null,
+                selection,
+                selectionArgs,
+                null, null, null
+        )
+        var setting: AppSettings? = null
+        if (cursor.moveToFirst()) {
+            setting = AppSettings("launch_version", cursor.getString(1))
+            cursor.close()
+        }
+
+        db.close()
+        return setting
+    }
+
+    fun updateLaunchVersion(version:String): Boolean {
+        val db = this.writableDatabase
+        val args = ContentValues()
+        args.put(COLUMN_VALUE, version)
+
+        // Which row to update, based on the title
+        val selection = "$COLUMN_PROPERTY = ?"
+        val selectionArgs = arrayOf("launch_version")
+        return db.update(TABLE_NAME_SET, args, selection, selectionArgs) > 0
     }
 
     fun registerUser(user_ID: String): Boolean {

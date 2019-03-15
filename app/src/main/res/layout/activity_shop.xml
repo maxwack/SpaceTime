@@ -27,6 +27,10 @@
                 android:textSize="24sp" />
     </android.support.v7.widget.Toolbar>
 
+    <View android:layout_height="2dp"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -38,7 +42,9 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                app:cardBackgroundColor="@android:color/transparent">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:contentPaddingLeft="10dp"
+                app:contentPaddingRight="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -49,7 +55,6 @@
                         android:id="@+id/image200"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/desc_coin"
@@ -64,13 +69,12 @@
                         android:gravity="center_vertical"
                         android:text="@string/amount_200"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <Button
                         android:id="@+id/but_buy_200"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/but_border"
                         android:fontFamily="@font/digitaldreamfat"
@@ -80,10 +84,16 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
+            <View android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary" />
+
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                app:cardBackgroundColor="@android:color/transparent">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:contentPaddingLeft="10dp"
+                app:contentPaddingRight="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -94,7 +104,6 @@
                         android:id="@+id/image500"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/desc_coin"
@@ -109,13 +118,12 @@
                         android:gravity="center_vertical"
                         android:text="@string/amount_500"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <Button
                         android:id="@+id/but_buy_500"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/but_border"
                         android:fontFamily="@font/digitaldreamfat"
@@ -125,10 +133,16 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
+            <View android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary" />
+
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                app:cardBackgroundColor="@android:color/transparent">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:contentPaddingLeft="10dp"
+                app:contentPaddingRight="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -139,7 +153,6 @@
                         android:id="@+id/image1000"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/desc_coin"
@@ -154,13 +167,12 @@
                         android:gravity="center_vertical"
                         android:text="@string/amount_1000"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <Button
                         android:id="@+id/but_buy_1000"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/but_border"
                         android:fontFamily="@font/digitaldreamfat"
@@ -170,10 +182,16 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
+            <View android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary" />
+
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                app:cardBackgroundColor="@android:color/transparent">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:contentPaddingLeft="10dp"
+                app:contentPaddingRight="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -184,7 +202,6 @@
                         android:id="@+id/image10000"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/desc_coin"
@@ -199,13 +216,12 @@
                         android:gravity="center_vertical"
                         android:text="@string/amount_10000"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <Button
                         android:id="@+id/but_buy_10000"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/but_border"
                         android:fontFamily="@font/digitaldreamfat"
@@ -214,6 +230,10 @@
                         android:textColor="@color/colorPrimary" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
+            <View android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

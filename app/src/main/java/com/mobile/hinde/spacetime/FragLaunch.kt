@@ -1,12 +1,28 @@
 package com.mobile.hinde.spacetime
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.JsonArray
+import com.mobile.hinde.connection.AsyncResponse
+import com.mobile.hinde.connection.LaunchList
+import com.mobile.hinde.database.DBHandler
+import com.mobile.hinde.service.BroadcastService
+import com.mobile.hinde.utils.Constant
+import com.mobile.hinde.utils.UserSettings
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.nio.charset.Charset
 
 
 /**
@@ -20,11 +36,48 @@ import android.view.ViewGroup
 class FragLaunch : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
+    private var mDBHandler: DBHandler? = null
+    private val dbInstance = FirebaseFirestore.getInstance()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mDBHandler = DBHandler(context!!)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val ver = mDBHandler!!.getLaunchVersion()?.value
+        dbInstance.collection("settings").document("launch_version").get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val newV = task.result!!["ver"] as String
+                if(ver != newV){
+                    mDBHandler!!.updateLaunchVersion(newV)
+                    LaunchList(object : AsyncResponse {
+                        override fun processFinish(output: Any) {
+                            val resJson = output as JSONArray
+                            activity!!.openFileOutput("launch_list.json", Context.MODE_PRIVATE).use {
+                                it.write(resJson.toString().toByteArray(Charsets.UTF_8))
+                            }
+
+                            updateLaunchList(view!!)
+                        }
+                    }).execute()
+                }
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.frag_launch, container, false)
+        val view = inflater.inflate(R.layout.frag_launch, container, false)
+
+        if(activity!!.fileList().contains("launch_list.json")){
+            //DISPLAY CURRENT FILE
+            updateLaunchList(view)
+        }
+        return view
     }
 
 
@@ -73,5 +126,40 @@ class FragLaunch : Fragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+
+    private fun updateLaunchList(v : View){
+        var jsonLaunchList:JSONArray? = null
+
+        activity!!.openFileInput("launch_list.json").use {
+            it.bufferedReader(Charsets.UTF_8).use{buf->
+                jsonLaunchList = JSONArray(buf.readText())
+            }
+        }
+
+        if(jsonLaunchList ==  null){
+            return
+        }
+
+        val rootLayout = v.findViewById<LinearLayout>(R.id.launch_root)
+        rootLayout.removeAllViews()
+
+        val fragTransaction = childFragmentManager.beginTransaction()
+
+        for(i in 0..(jsonLaunchList!!.length() - 1 )){
+
+            val currLaunch = jsonLaunchList!!.getJSONObject(i)
+
+            val fragSpaceCraft = FragSpaceCraft()
+            val bundleLaunch = Bundle()
+            bundleLaunch.putString("rocket", currLaunch.getString("rocket"))
+            bundleLaunch.putString("mission", currLaunch.getString("mission"))
+            bundleLaunch.putString("date", currLaunch.getString("date"))
+            fragSpaceCraft.arguments = bundleLaunch
+
+            fragTransaction.add(R.id.launch_root, fragSpaceCraft, "fragment$i")
+        }
+        fragTransaction.commit()
+
     }
 }// Required empty public constructor

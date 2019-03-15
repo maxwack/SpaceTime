@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.view.View
+import android.util.TypedValue
+
+
 
 class ActShop: AppCompatActivity(), View.OnClickListener {
 
@@ -15,7 +18,18 @@ class ActShop: AppCompatActivity(), View.OnClickListener {
         windowManager.defaultDisplay.getMetrics(dm)
 
         val mMaxWidth = (dm.widthPixels * 0.9).toInt()
-        val mMaxHeight = (dm.heightPixels * 0.6).toInt()
+
+        val styledAttributes = theme.obtainStyledAttributes(
+                intArrayOf(android.R.attr.actionBarSize)
+        )
+        val actionBarHeight = styledAttributes.getDimension(0, 0f).toInt()
+        val px = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                80f,
+                dm
+        )
+
+        val mMaxHeight = actionBarHeight + px.toInt() * 4 +20
 
         window.setLayout(mMaxWidth, mMaxHeight)
 

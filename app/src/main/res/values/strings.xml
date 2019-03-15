@@ -13,7 +13,6 @@
     <string name="txt_voy1">VOYAGER 1</string>
     <string name="txt_insight">INSIGHT</string>
 
-    <string name="but_save">SAVE</string>
     <string name="but_start">START OPERATIONS</string>
     <string name="but_send">SEND</string>
     <string name="but_accept">ACCEPT</string>

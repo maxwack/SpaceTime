@@ -1,30 +1,21 @@
 package com.mobile.hinde.spacetime
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
-import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.mobile.hinde.connection.AsyncResponse
 import com.mobile.hinde.connection.ImageURL
 import com.mobile.hinde.utils.Tools
-import java.io.File
-import java.io.FileOutputStream
 
 
-class ActImage : AppCompatActivity(), View.OnClickListener  {
+class ActImage : AppCompatActivity(){
 
     private var mImage: ImageView? = null
     private var mLegend: TextView? = null
-    private var mSave: Button? = null
 
     private var mImageName: String? = null
     private var mImageTitle: String? = null
@@ -51,7 +42,6 @@ class ActImage : AppCompatActivity(), View.OnClickListener  {
         window.setLayout(mMaxWidth, mMaxHeight)
 
         mLegend = findViewById(R.id.text_legend)
-        mSave = findViewById(R.id.save)
         mImage = findViewById(R.id.image)
 
 
@@ -66,8 +56,6 @@ class ActImage : AppCompatActivity(), View.OnClickListener  {
         mLegend!!.text = mImageLegend
         mLegend!!.measure(0,0)
 
-        mSave!!.measure(0,0)
-
         if(fileList().contains(mImageName)){
             val bmpImage = BitmapFactory.decodeStream(openFileInput(mImageName))
             mImage!!.setImageBitmap(bmpImage)
@@ -75,7 +63,7 @@ class ActImage : AppCompatActivity(), View.OnClickListener  {
             val height = bmpImage.height
             if (width > 0) {
                 val ratio = mMaxWidth.toFloat() / width.toFloat()
-                val newHeight = (height * ratio).toInt() + mLegend!!.measuredHeight + mSave!!.measuredHeight + actionBarHeight
+                val newHeight = (height * ratio).toInt() + mLegend!!.measuredHeight + actionBarHeight
                 window.setLayout(mMaxWidth, newHeight)
             }
         }else{
@@ -90,7 +78,7 @@ class ActImage : AppCompatActivity(), View.OnClickListener  {
                         val height = output.intrinsicHeight
                         if (width > 0) {
                             val ratio = mMaxWidth.toFloat() / width.toFloat()
-                            val newHeight = (height * ratio).toInt() + mLegend!!.height + mSave!!.height + actionBarHeight
+                            val newHeight = (height * ratio).toInt() + mLegend!!.height + actionBarHeight
                             window.setLayout(mMaxWidth, newHeight)
                         }
                     }
@@ -98,18 +86,7 @@ class ActImage : AppCompatActivity(), View.OnClickListener  {
             }).execute(mImageName, mURL)
         }
 
-        val saveBut = findViewById<Button>(R.id.save)
-        saveBut.setOnClickListener(this@ActImage)
     }
 
-    override fun onClick(v: View) {
-        if(Tools.isExternalStorageWritable()) {
-            val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), mImageName)
-            FileOutputStream(file).use {
-                (mImage?.drawable as BitmapDrawable).bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
-                Toast.makeText(this@ActImage, "Image saved", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 
 }
